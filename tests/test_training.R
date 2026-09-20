@@ -5,6 +5,9 @@ script <- if (length(args)) sub("^--file=", "", args[1L]) else "tests/test_train
 root <- normalizePath(file.path(dirname(normalizePath(script, mustWork = TRUE)), ".."), mustWork = TRUE)
 source(file.path(root, "R", "model.R"))
 source(file.path(root, "R", "optimiser.R"))
+source(file.path(root, "R", "data.R"))
+source(file.path(root, "R", "progress.R"))
+source(file.path(root, "R", "plots.R"))
 
 train_step <- function(model, state, inputs, targets) {
   result <- loss_and_gradients(model, inputs, targets)
@@ -84,8 +87,51 @@ stopifnot(identical(continuous$model, resumed$model),
           identical(continuous$rng_state, resumed$rng_state),
           identical(continuous$window_order, resumed$window_order),
           identical(continuous$next_window, resumed$next_window),
-          file.exists(file.path(resumed_directory, "FINISHED")))
+          file.exists(file.path(resumed_directory, "FINISHED")),
+          file.exists(file.path(reference_directory, "training.html")),
+          file.exists(file.path(reference_directory, "generation_comparison.txt")),
+          file.exists(file.path(resumed_directory, "training.html")))
 cat("[PASS] Real runner: continuous and resumed smoke runs agree at update 20\n")
+
+# A best-model sample uses exactly the same generation conditions as the saved
+# iteration-0 sample. It is regenerated from best_model.rds, not selected by eye.
+comparison <- readRDS(file.path(reference_directory, "generation_comparison.rds"))
+resumed_comparison <- readRDS(file.path(resumed_directory, "generation_comparison.rds"))
+metadata <- readRDS(file.path(reference_directory, "metadata.rds"))
+stopifnot(identical(comparison, resumed_comparison),
+          comparison$initial$iteration == 0L,
+          comparison$best$iteration == metadata$best_iteration,
+          identical(comparison$best$validation_loss_nats_per_char,
+                    metadata$best_validation_nats_per_char),
+          identical(comparison$initial$prompt, comparison$best$prompt),
+          identical(comparison$initial$seed, comparison$best$seed),
+          identical(comparison$initial$n_generated, comparison$best$n_generated),
+          identical(comparison$initial$temperature, comparison$best$temperature))
+vocab <- load_vocab(file.path(reference_directory, "vocab.rds"))
+selected_model <- load_model(file.path(reference_directory, "best_model.rds"))
+regenerated <- make_generation_sample(selected_model, vocab,
+  comparison$initial$prompt, comparison$best$iteration,
+  comparison$best$validation_loss_nats_per_char,
+  comparison$best$n_generated, comparison$best$seed,
+  comparison$best$temperature)
+stopifnot(identical(regenerated, comparison$best))
+recorded_initial <- read_initial_generation_sample(reference_directory,
+  comparison$initial$prompt, comparison$initial$validation_loss_nats_per_char,
+  comparison$initial$seed)
+stopifnot(identical(recorded_initial, comparison$initial))
+stopifnot(identical(restore_generation_comparison(reference_directory, vocab,
+  comparison$initial$prompt, metadata$config,
+  comparison$initial$validation_loss_nats_per_char,
+  metadata$best_iteration, metadata$best_validation_nats_per_char), comparison))
+html <- paste(readLines(file.path(reference_directory, "training.html"),
+  warn = FALSE), collapse = "\n")
+stopifnot(grepl("Best-validation checkpoint", html, fixed = TRUE),
+          !grepl('meta http-equiv="refresh"', html, fixed = TRUE))
+comparison_text <- paste(readLines(file.path(reference_directory,
+  "generation_comparison.txt"), warn = FALSE), collapse = "\n")
+stopifnot(grepl(comparison$initial$generated_text, comparison_text, fixed = TRUE),
+          grepl(comparison$best$generated_text, comparison_text, fixed = TRUE))
+cat("[PASS] Exact initial/best text, text-only HTML, real selected weights, legacy recovery, deterministic resume\n")
 
 unlink(checkpoint)
 unlink(c(reference_output, resumed_output), recursive = TRUE)

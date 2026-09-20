@@ -1,4 +1,187 @@
-# Publication and browser-monitor plots. Only this module needs ggplot2.
+# Publication and browser-monitor plots. Only numerical figures need ggplot2.
+
+# Model-derived generation evidence. These helpers do not require ggplot2.
+# The fixed comparison seed makes the initial and selected-model samples directly
+# comparable as demonstrations, without selecting the most readable random sample.
+make_generation_sample <- function(model, vocab, prompt, iteration, validation_loss,
+                                   n, seed, temperature = 1) {
+  if (!is.character(prompt) || length(prompt) != 1L || is.na(prompt) ||
+      !nzchar(prompt) || length(validation_loss) != 1L ||
+      !is.finite(validation_loss) || length(temperature) != 1L ||
+      !is.finite(temperature) || temperature <= 0) {
+    stop("Invalid generation prompt, validation loss, or temperature.")
+  }
+  generated <- with_sampling_seed(seed, sample_indices(
+    model, encode_text(prompt, vocab), n = n, temperature = temperature))
+  list(iteration = as.integer(iteration),
+       validation_loss_nats_per_char = as.numeric(validation_loss),
+       prompt = prompt, generated_text = decode_indices(generated, vocab),
+       n_generated = as.integer(n), seed = as.integer(seed),
+       temperature = as.numeric(temperature))
+}
+
+# Before this feature existed, the initial sample was recorded only in samples.txt.
+# Read the actual recorded text rather than inventing a replacement initial model.
+read_initial_generation_sample <- function(directory, prompt, initial_loss,
+                                           seed, temperature = 1) {
+  sample_file <- file.path(directory, "samples.txt")
+  if (!file.exists(sample_file)) return(NULL)
+  size <- file.info(sample_file)$size
+  if (!is.finite(size) || size < 1L) return(NULL)
+  content <- rawToChar(readBin(sample_file, what = "raw", n = size))
+  start <- regexpr("=== update 0 |", content, fixed = TRUE)[1L]
+  if (start < 1L) return(NULL)
+  remaining <- substring(content, start)
+  header_end <- regexpr("\n", remaining, fixed = TRUE)[1L]
+  if (header_end < 1L) return(NULL)
+  header <- substr(remaining, 1L, header_end - 1L)
+  if (!startsWith(header, "=== update 0 | validation ") ||
+      !grepl(" | prompt ", header, fixed = TRUE) ||
+      !endsWith(header, " | temperature 1 ===")) return(NULL)
+  body <- substring(remaining, header_end + 1L)
+  next_sample <- regexpr("\n=== update ", body, fixed = TRUE)[1L]
+  if (next_sample > 0L) body <- substr(body, 1L, next_sample - 1L)
+  body <- sub("\n$", "", body)
+  prefix_size <- nchar(prompt, type = "chars")
+  if (!startsWith(body, prompt)) return(NULL)
+  generated_text <- substring(body, prefix_size + 1L)
+  list(iteration = 0L, validation_loss_nats_per_char = as.numeric(initial_loss),
+       prompt = prompt, generated_text = generated_text,
+       n_generated = as.integer(nchar(generated_text, type = "chars")),
+       seed = as.integer(seed), temperature = as.numeric(temperature))
+}
+
+# Migrate an earlier completed run using its real recorded initial sample and the
+# genuine selected model. Returns NULL if the required evidence is unavailable.
+restore_generation_comparison <- function(directory, vocab, prompt, config,
+                                          initial_loss, best_iteration, best_loss) {
+  fixed_seed <- as.integer(config$seed + 100000L)
+  initial <- read_initial_generation_sample(directory, prompt, initial_loss, fixed_seed)
+  selected_path <- file.path(directory, "best_model.rds")
+  if (is.null(initial) || !file.exists(selected_path)) return(NULL)
+  best <- make_generation_sample(load_model(selected_path), vocab, prompt,
+    best_iteration, best_loss, n = initial$n_generated,
+    seed = fixed_seed, temperature = initial$temperature)
+  list(initial = initial, best = best)
+}
+
+# This content is inserted as text, not trusted markup, in a local HTML monitor.
+html_escape <- function(value) {
+  value <- gsub("&", "&amp;", value, fixed = TRUE)
+  value <- gsub("<", "&lt;", value, fixed = TRUE)
+  value <- gsub(">", "&gt;", value, fixed = TRUE)
+  value <- gsub('"', "&quot;", value, fixed = TRUE)
+  gsub("'", "&#39;", value, fixed = TRUE)
+}
+
+generation_comparison_html <- function(directory) {
+  comparison_path <- file.path(directory, "generation_comparison.rds")
+  if (!file.exists(comparison_path)) return("")
+  result <- readRDS(comparison_path)
+  samples <- list(result$initial, result$best)
+  if (!all(vapply(samples, function(item) is.list(item) &&
+       all(c("iteration", "validation_loss_nats_per_char", "prompt",
+             "generated_text", "n_generated", "seed", "temperature") %in%
+             names(item)), logical(1L)))) {
+    stop("Invalid generation_comparison.rds.")
+  }
+  if (!identical(samples[[1L]]$prompt, samples[[2L]]$prompt) ||
+      !identical(samples[[1L]]$seed, samples[[2L]]$seed) ||
+      !identical(samples[[1L]]$n_generated, samples[[2L]]$n_generated) ||
+      !identical(samples[[1L]]$temperature, samples[[2L]]$temperature)) {
+    stop("Generation comparison must use an identical prompt and sampling setup.")
+  }
+  sample_card <- function(sample, title) {
+    heading <- sprintf("Update %s | validation %.6f nats/char",
+      format(sample$iteration, big.mark = ","),
+      sample$validation_loss_nats_per_char)
+    paste0('<article class="sample"><h3>', html_escape(title), '</h3><p class="sample-meta">',
+      html_escape(heading), '</p><pre class="generated">',
+      html_escape(sample$generated_text), '</pre></article>')
+  }
+  paste0('<section aria-labelledby="generation-heading"><h2 id="generation-heading">',
+    'Text generation: before and after training</h2>',
+    '<p>The selected checkpoint has the lowest measured validation loss, ',
+    'not the most appealing sample. Both outputs use the same prompt and random ',
+    'sampling settings; the text below is the unedited model output.</p>',
+    '<p class="sample-meta">Prompt: <code>', html_escape(samples[[1L]]$prompt),
+    '</code> | ', samples[[1L]]$n_generated,
+    ' generated characters | temperature ',
+    format(samples[[1L]]$temperature, trim = TRUE), ' | sample seed ',
+    samples[[1L]]$seed, '</p>',
+    '<div class="sample-grid">',
+    sample_card(samples[[1L]], "Before training"),
+    sample_card(samples[[2L]], "Best-validation checkpoint"),
+    '</div><p class="sample-meta">See <a href="samples.txt">all periodic samples</a>',
+    ' and <a href="generation_comparison.txt">the complete comparison text</a>',
+    ' (<a href="generation_comparison.rds">structured data</a>).</p></section>')
+}
+
+# The companion plain-text file is useful for copying genuine results into a blog.
+# The structured RDS remains the exact source of truth for prompt and output text.
+write_generation_comparison_text <- function(directory) {
+  record_path <- file.path(directory, "generation_comparison.rds")
+  if (!file.exists(record_path)) return(invisible(NULL))
+  comparison <- readRDS(record_path)
+  format_sample <- function(sample, label) {
+    paste0("=== ", label, " | update ", sample$iteration,
+      " | validation ", sprintf("%.6f", sample$validation_loss_nats_per_char),
+      " nats/char | prompt ", encodeString(sample$prompt, quote = '"'),
+      " | temperature ", sample$temperature, " | sampling seed ",
+      sample$seed, " ===\n", sample$prompt, sample$generated_text)
+  }
+  content <- paste0("Text generation: before and after training\n",
+    "Both samples use the same prompt, sampling seed, temperature and length.\n",
+    "The checkpoint is selected by validation loss, not by sample readability.\n\n",
+    format_sample(comparison$initial, "Before training"), "\n\n",
+    format_sample(comparison$best, "Best-validation checkpoint"), "\n")
+  destination <- file.path(directory, "generation_comparison.txt")
+  writeChar(content, destination, eos = NULL, useBytes = TRUE)
+  invisible(destination)
+}
+
+# Rebuild only the monitor HTML after FINISHED appears, so its automatic refresh
+# no longer interrupts reading/copying the generated text from a completed run.
+write_monitor_html <- function(directory) {
+  active <- !file.exists(file.path(directory, "FINISHED"))
+  refresh <- if (active) '<meta http-equiv="refresh" content="10">' else ''
+  comparison <- generation_comparison_html(directory)
+  write_generation_comparison_text(directory)
+  image <- function(filename, alt) {
+    if (!file.exists(file.path(directory, filename))) return("")
+    paste0('<img src="', filename, '" alt="', html_escape(alt), '">')
+  }
+  html <- paste0('<!doctype html><html lang="en"><head><meta charset="utf-8">',
+    '<meta name="viewport" content="width=device-width,initial-scale=1">', refresh,
+    '<title>Transformer training</title><style>',
+    'body{font:16px/1.5 system-ui,sans-serif;max-width:1100px;margin:auto;',
+    'padding:16px;color:#23323c}h1{font-size:1.4rem}h2{font-size:1.2rem;',
+    'margin-top:32px}h3{font-size:1rem;margin:0}small,.sample-meta{color:#52646f}',
+    'img{display:block;max-width:100%;height:auto;margin:20px auto 28px}',
+    '.sample-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}',
+    '.sample{min-width:0;border:1px solid #dbe4e9;border-radius:9px;padding:16px}',
+    '.sample-meta{font-size:.88rem;margin:8px 0 12px}',
+    '.generated{font:13px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;',
+    'white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;',
+    'max-width:100%;margin:0;tab-size:4}',
+    '@media(max-width:700px){.sample-grid{grid-template-columns:minmax(0,1fr)}',
+    'body{padding:12px}h1{font-size:1.2rem}.sample{padding:12px}}',
+    '</style></head><body><h1>Transformer training</h1>',
+    '<small>', if (active) 'Refreshes every 10 seconds. Training runs independently of this page.' else 'Completed experiment. Results are saved locally.', '</small>',
+    if (file.exists(file.path(directory, "training.png"))) {
+      if (file.exists(file.path(directory, "training_mobile.png")))
+        paste0('<picture><source media="(max-width:600px)" srcset="training_mobile.png">',
+               '<img src="training.png" alt="Training and validation loss"></picture>')
+      else '<img src="training.png" alt="Training and validation loss">'
+    } else '<p class="sample-meta">Training curves are not available for this run. Text samples and numerical metrics are saved independently of plotting.</p>',
+
+    comparison,
+    image("validation_detail.png", "Loss by held-out passage"),
+    image("attention.png", "Learned causal attention"),
+    '</body></html>')
+  writeLines(html, file.path(directory, "training.html"), useBytes = TRUE)
+  invisible(file.path(directory, "training.html"))
+}
 
 require_plots <- function() {
   if (!requireNamespace("ggplot2", quietly = TRUE) ||
@@ -148,8 +331,7 @@ plot_experiment <- function(directory) {
       plot_attention_matrix(snapshot$attention, snapshot$characters),
       width = 7.5, height = 6.8, dpi = 150, bg = "white")
   }
-  html <- '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="10"><title>Transformer training</title><style>body{font:16px/1.5 system-ui,sans-serif;max-width:1100px;margin:auto;padding:16px;color:#23323c}img{display:block;max-width:100%;height:auto;margin:20px auto 28px}h1{font-size:1.4rem}small{color:#52646f}@media(max-width:600px){body{padding:8px}h1{font-size:1.15rem}}</style></head><body><h1>Transformer training</h1><small>Refreshes every 10 seconds. Training runs independently of this page.</small><picture><source media="(max-width:600px)" srcset="training_mobile.png"><img src="training.png" alt="Training and validation loss"></picture><img src="validation_detail.png" alt="Loss by held-out passage" onerror="this.style.display=\'none\'"><img src="attention.png" alt="Learned causal attention" onerror="this.style.display=\'none\'"></body></html>'
-  writeLines(html, file.path(directory, "training.html"), useBytes = TRUE)
+  write_monitor_html(directory)
   list(files = c(desktop, mobile, file.path(directory, "training.html")),
        best = best_validation_row(metrics))
 }

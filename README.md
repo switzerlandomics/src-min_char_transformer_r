@@ -1,7 +1,7 @@
 # min-char-transformer in base R
 
 A small, CPU-only **decoder-style character Transformer** written directly in R.
-This is the next learning project after [Karpathy's minimal character RNN](https://gist.github.com/karpathy/d4dee566867f8291f086):
+This is the next learning project after Karpathy's minimal character RNN which we independently built in R [here](https://switzerlandomics.ch/blog/2026-09-19-building-a-rnn-language-model-from-scratch-in-r/):
 the task is still to predict the next character of Tiny Shakespeare, but the
 network uses **causal self-attention** in place of a recurrent hidden state.
 Character/position embeddings, the attention block, layer normalisation,
@@ -28,6 +28,7 @@ From the repository root, with `Rscript` available:
 Rscript tests/test_model.R
 Rscript tests/test_gradients.R
 Rscript tests/test_training.R
+Rscript tests/test_monitoring.R
 Rscript experiments/run.R --smoke --no-plot
 ```
 
@@ -46,6 +47,128 @@ Rscript experiments/run.R --iterations=2000
 The runner downloads Tiny Shakespeare on the first normal run if its file is
 missing. With no plotting package, use `--no-plot`. The 2,000-update command is
 an initial experiment, not a guaranteed training time or quality target.
+
+
+### Choose a training duration
+
+The default run performs 2,000 updates and takes approximately 20–30 seconds
+on our reference laptop. Longer runs use the same model architecture and
+training data, but allow more opportunities for the model to improve.
+
+**Quick demonstration (approximately 30 seconds):**
+
+```sh
+Rscript experiments/run.R
+```
+
+**Short experiment (approximately 1 minute):**
+
+```sh
+Rscript experiments/run.R --iterations=5000
+```
+
+**Extended experiment (approximately 10 minutes):**
+
+```sh
+Rscript experiments/run.R \
+  --iterations=50000 \
+  --log-interval=1000 \
+  --validation-interval=2500 \
+  --checkpoint-interval=5000 \
+  --sample-interval=5000
+```
+
+**Long experiment (approximately 1 hour):**
+
+```sh
+Rscript experiments/run.R \
+  --iterations=300000 \
+  --log-interval=5000 \
+  --validation-interval=5000 \
+  --checkpoint-interval=10000 \
+  --sample-interval=10000
+```
+
+These timings are approximate and depend on the computer and plotting overhead.
+Longer training does not guarantee better predictions: the runner retains the
+checkpoint with the lowest measured validation loss.
+
+Open the experiment's `training.html` to follow its learning curve and compare
+text generated before training with text from the best-validation checkpoint.
+
+The longer-run commands deliberately reduce how often the runner validates, creates samples and saves checkpoints. Otherwise, a 300,000-update run would repeatedly generate the same figures and samples at the short-run frequency.
+
+You do not need to start again to extend your existing run. To continue the completed 2,000-update experiment to a total of 50,000 updates, use:
+
+```sh
+Rscript experiments/run.R \
+  --resume=output/20260920_165028_seed666 \
+  --iterations=50000 \
+  --log-interval=1000 \
+  --validation-interval=2500 \
+  --checkpoint-interval=5000 \
+  --sample-interval=5000
+```
+
+Here, --iterations=50000 means 50,000 updates in total, not 50,000 additional updates. If you extend a run, keep using its existing experiment directory so its learning curve and best-validation checkpoint reflect the complete training history.
+
+The default is to use 32 characters in context. These should already enough to learn and generate complete words. If you want to investigate the context limitation, run a separate 64-character or 128-character experiment. Keep the embedding width and feed-forward width unchanged initially, so context length is the main architectural change:
+
+```sh
+Rscript experiments/run.R \
+  --context-length=64 \
+  --iterations=50000 \
+  --log-interval=1000 \
+  --validation-interval=2500 \
+  --checkpoint-interval=5000 \
+  --sample-interval=5000
+```
+
+## Heaviest runs tested
+
+Here are the versions I ran which are in my results output dir.
+20260920_170839_seed666
+time=27m 22s:
+
+```sh
+ Rscript experiments/run.R \
+    --iterations=300000 \
+    --log-interval=5000 \
+    --validation-interval=5000 \
+    --checkpoint-interval=10000 \
+    --sample-interval=10000
+```
+
+Double the context from 32 to 64 characters, increases the model width moderately, and trains for 100,000 updates. It is a sensible next experiment for testing whether more context and capacity improve the generated text, without committing to the much larger run.
+20260920_175829_seed666
+time=1h 01m 36s:
+
+```sh
+Rscript experiments/run.R \
+  --context-length=64 \
+  --embedding-size=48 \
+  --feedforward-size=96 \
+  --iterations=300000 \
+  --log-interval=2000 \
+  --validation-interval=5000 \
+  --checkpoint-interval=10000 \
+  --sample-interval=10000
+```
+
+Next we doubled the context from 64 to 128 characters while keeping model capacity and training updates unchanged, to test whether access to more preceding text improves prediction and generated coherence.
+time= ETA 2.5h
+
+```sh
+Rscript experiments/run.R \
+  --context-length=128 \
+  --embedding-size=48 \
+  --feedforward-size=96 \
+  --iterations=300000 \
+  --log-interval=2000 \
+  --validation-interval=5000 \
+  --checkpoint-interval=10000 \
+  --sample-interval=10000
+```
 
 ## How this model predicts the next character
 
@@ -108,7 +231,7 @@ Rscript experiments/run.R \
   --feedforward-size=64 \
   --lr=0.001 \
   --iterations=2000 \
-  --seed=42
+  --seed=666
 ```
 
 The input must be large enough for non-overlapping evaluation passages, and
@@ -122,16 +245,46 @@ Each experiment creates a timestamped directory under `output/`. The console
 and `experiment.log` record the configuration, dataset sizes, training progress,
 elapsed time, ETA, validation measurements and checkpoint updates. Open the
 run's `training.html` in a browser to watch the curves refresh independently
-of training. `samples.txt` records generated text at selected updates.
+of training. Directly below the learning curve, **Text generation: before and
+after training** displays the real iteration-0 output alongside text produced
+by the lowest-measured-validation-loss checkpoint (`best_model.rds`). The two
+samples use the **same prompt, sampling seed, temperature and output length**.
+The saved text is not edited or selected for readability. The comparison
+refreshes when a better checkpoint is saved; a completed run's page stops
+automatically refreshing so its text can be read and copied.
+
+The same verified comparison is saved as **`generation_comparison.txt`** for
+copying directly into a blog post, with `generation_comparison.rds` preserving
+structured provenance: prompt, generation settings, exact text, checkpoint
+iteration and validation loss.
+`training.html` is also written with `--no-plot`: its text comparison does not
+need ggplot2. `samples.txt` retains the periodic generation history, using a separate
+seed for each periodic sample and is not the controlled before/after comparison.
+A lower validation loss does not guarantee that any one sampled passage reads
+better, particularly for this small 32-character-context model.
 
 With plotting enabled, the runner produces `training.png`, a separately laid-out
 `training_mobile.png`, `validation_detail.png` and `attention.png`. The last
 figure displays actual attention weights computed from the current checkpoint.
-To recreate plots from recorded metrics:
+To recreate plots and the HTML page from saved experiment outputs:
 
 ```sh
 Rscript experiments/plot_results.R output/YOUR_EXPERIMENT_DIRECTORY
+cat output/YOUR_EXPERIMENT_DIRECTORY/generation_comparison.txt
 ```
+
+The first command creates or refreshes the HTML and text comparison from saved
+experiment evidence; the second prints its genuine before/after samples in your
+terminal, ready to copy into a blog draft. Neither command retrains the model.
+
+For a run created before the comparison feature was added, this command also
+recovers the **original** iteration-0 text from `samples.txt` and generates a
+matching sample from its saved `best_model.rds`. Its original input corpus,
+metadata and vocabulary must still be available. It does not retrain or invent
+the initial sample. When plotting is disabled, the structured comparison is
+still saved and displayed as selectable text in `training.html`, even without
+`ggplot2`. To add the optional learning curves later, install `ggplot2` and run
+the plotting command above.
 
 **Loss is measured in nats per character; lower is better.** A uniform
 predictor has loss `log(vocabulary_size)`. The runner also evaluates an
@@ -185,12 +338,13 @@ target may change.
 |---|---|
 | `metrics.csv`, `validation_passages.csv` | Aggregate and passage-level measurements |
 | `experiment.log`, `metadata.rds` | Human-readable log and machine-readable run configuration |
-| `samples.txt`, `attention_snapshot.rds` | Saved generated passages and model-derived attention |
+| `samples.txt`, `attention_snapshot.rds` | Periodic generated passages and model-derived attention |
+| `generation_comparison.rds`, `generation_comparison.txt` | Original and best-validation generated text, fixed prompt and sampling settings; the text file is ready for a blog excerpt |
 | `best_model.rds` | Lowest measured validation-loss checkpoint |
 | `model.rds` | Final or most recently stopped model parameters |
 | `latest_checkpoint.rds` | Full training state required for resumption |
 | `vocab.rds` | Character-to-index mapping |
-| `training.html`, `*.png` | Optional local monitoring and figures |
+| `training.html`, `*.png` | Local HTML monitor (also available with `--no-plot`) and optional figures |
 | `FINISHED` | Normal completion marker; removed on resumption |
 
 The original downloaded corpus, checkpoints, logs and full experiment outputs
@@ -215,6 +369,16 @@ The RNN can carry hidden state across training windows while this Transformer
 only sees its supplied context; the two models also differ in parameter count,
 training split and optimiser. Historical curves must not be called a controlled
 head-to-head benchmark without retraining and standardising those conditions.
+
+## Important note for next time
+
+Planned improvement: automatic experiment configuration report
+
+Update `experiments/run.R` to automatically save a human-readable `run_command.txt` in every experiment’s output directory. The report should include the original command entered by the user, a reproducible command containing all resolved parameters (including defaults), and a neatly formatted summary of the model, training, validation, sampling and checkpoint settings. Any configuration changes made when resuming an experiment should also be recorded.
+
+The report should be generated automatically, without requiring the temporary `print_params.sh` script.
+
+
 
 ## References and attribution
 

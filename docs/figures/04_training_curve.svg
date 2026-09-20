@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='792.00pt' height='396.00pt' viewBox='0 0 792.00 396.00'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw3OTIuMDB8MC4wMHwzOTYuMDA='>
+    <rect x='0.00' y='0.00' width='792.00' height='396.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw3OTIuMDB8MC4wMHwzOTYuMDA=)'>
+<rect x='0.00' y='-0.00000000000011' width='792.00' height='396.00' style='stroke-width: 1.16; stroke: none; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpNTQuMDZ8NzcwLjA4fDQ4LjY0fDMwNi4zNg=='>
+    <rect x='54.06' y='48.64' width='716.02' height='257.72' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpNTQuMDZ8NzcwLjA4fDQ4LjY0fDMwNi4zNg==)'>
+<rect x='54.06' y='48.64' width='716.02' height='257.72' style='stroke-width: 1.16; stroke: none; fill: #FFFFFF;' />
+<polyline points='54.06,283.70 770.08,283.70 ' style='stroke-width: 0.75; stroke: #E5E5E5; stroke-linecap: butt;' />
+<polyline points='54.06,239.91 770.08,239.91 ' style='stroke-width: 0.75; stroke: #E5E5E5; stroke-linecap: butt;' />
+<polyline points='54.06,196.11 770.08,196.11 ' style='stroke-width: 0.75; stroke: #E5E5E5; stroke-linecap: butt;' />
+<polyline points='54.06,152.32 770.08,152.32 ' style='stroke-width: 0.75; stroke: #E5E5E5; stroke-linecap: butt;' />
+<polyline points='54.06,108.53 770.08,108.53 ' style='stroke-width: 0.75; stroke: #E5E5E5; stroke-linecap: butt;' />
+<polyline points='54.06,64.73 770.08,64.73 ' style='stroke-width: 0.75; stroke: #E5E5E5; stroke-linecap: butt;' />
+<line x1='54.06' y1='93.37' x2='770.08' y2='93.37' style='stroke-width: 1.39; stroke: #929292; stroke-dasharray: 1.85,5.55; stroke-linecap: butt;' />
+<polyline points='67.83,143.89 79.50,191.23 91.17,206.89 102.83,217.72 114.50,226.10 126.17,232.08 137.84,234.18 149.51,236.33 161.18,239.77 172.85,246.82 184.52,244.36 196.19,246.88 207.86,242.90 219.53,248.78 231.20,254.31 242.87,249.54 254.53,249.27 266.20,256.41 277.87,254.92 289.54,256.22 301.21,255.19 312.88,255.92 324.55,257.24 336.22,258.94 347.89,255.10 359.56,254.79 371.23,252.91 382.90,255.56 394.57,260.72 406.24,259.26 417.90,260.10 429.57,258.04 441.24,257.97 452.91,262.79 464.58,264.07 476.25,261.75 487.92,264.21 499.59,263.00 511.26,263.84 522.93,262.24 534.60,258.90 546.27,265.09 557.94,262.33 569.60,264.89 581.27,268.75 592.94,262.96 604.61,269.29 616.28,267.69 627.95,264.06 639.62,266.94 651.29,265.20 662.96,268.92 674.63,269.96 686.30,264.80 697.97,265.95 709.64,269.17 721.30,268.55 732.97,264.37 744.64,261.99 756.31,265.22 ' style='stroke-width: 1.81; stroke-linecap: butt;' />
+<polyline points='67.83,141.18 79.50,179.97 91.17,196.48 102.83,201.06 114.50,208.84 126.17,218.16 137.84,216.85 149.51,223.53 161.18,220.44 172.85,225.80 184.52,229.09 196.19,230.67 207.86,228.16 219.53,232.99 231.20,231.02 242.87,235.23 254.53,235.00 266.20,236.49 277.87,239.04 289.54,238.04 301.21,238.71 312.88,237.28 324.55,236.91 336.22,242.06 347.89,240.29 359.56,241.13 371.23,241.77 382.90,239.54 394.57,243.97 406.24,240.70 417.90,241.38 429.57,244.74 441.24,244.32 452.91,245.71 464.58,246.60 476.25,242.91 487.92,246.40 499.59,242.59 511.26,248.68 522.93,246.36 534.60,245.65 546.27,247.06 557.94,245.75 569.60,247.32 581.27,246.01 592.94,247.62 604.61,247.39 616.28,246.56 627.95,249.34 639.62,244.61 651.29,247.59 662.96,247.03 674.63,247.75 686.30,247.33 697.97,247.72 709.64,248.63 721.30,249.11 732.97,247.74 744.64,251.46 756.31,251.42 ' style='stroke-width: 1.81; stroke: #E5262F; stroke-linecap: butt;' />
+<circle cx='744.64' cy='251.46' r='5.05' style='stroke-width: 1.98; stroke: #E5262F; fill: #FFFFFF;' />
+<text x='301.21' y='173.90' style='font-size: 11.38px; font-family: "Helvetica Neue";' textLength='217.65px' lengthAdjust='spacingAndGlyphs'>Best validation: 1.7472 at 295,000 updates</text>
+<text x='744.64' y='87.17' text-anchor='end' style='font-size: 10.24px; font-family: "Helvetica Neue";' textLength='104.82px' lengthAdjust='spacingAndGlyphs'>Bigram baseline: 2.469</text>
+</g>
+<g clip-path='url(#cpMC4wMHw3OTIuMDB8MC4wMHwzOTYuMDA=)'>
+<text x='48.68' y='287.98' text-anchor='end' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>1.6</text>
+<text x='48.68' y='244.19' text-anchor='end' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>1.8</text>
+<text x='48.68' y='200.40' text-anchor='end' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>2.0</text>
+<text x='48.68' y='156.60' text-anchor='end' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>2.2</text>
+<text x='48.68' y='112.81' text-anchor='end' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>2.4</text>
+<text x='48.68' y='69.02' text-anchor='end' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='16.68px' lengthAdjust='spacingAndGlyphs'>2.6</text>
+<text x='56.16' y='320.31' text-anchor='middle' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='26.68px' lengthAdjust='spacingAndGlyphs'>      0</text>
+<text x='172.85' y='320.31' text-anchor='middle' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='40.04px' lengthAdjust='spacingAndGlyphs'> 50,000</text>
+<text x='289.54' y='320.31' text-anchor='middle' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='43.38px' lengthAdjust='spacingAndGlyphs'>100,000</text>
+<text x='406.24' y='320.31' text-anchor='middle' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='43.38px' lengthAdjust='spacingAndGlyphs'>150,000</text>
+<text x='522.93' y='320.31' text-anchor='middle' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='43.38px' lengthAdjust='spacingAndGlyphs'>200,000</text>
+<text x='639.62' y='320.31' text-anchor='middle' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='43.38px' lengthAdjust='spacingAndGlyphs'>250,000</text>
+<text x='756.31' y='320.31' text-anchor='middle' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='43.38px' lengthAdjust='spacingAndGlyphs'>300,000</text>
+<text x='412.07' y='334.37' text-anchor='middle' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='102.46px' lengthAdjust='spacingAndGlyphs'>Parameter updates</text>
+<text transform='translate(26.50,177.50) rotate(-90)' text-anchor='middle' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='112.67px' lengthAdjust='spacingAndGlyphs'>Loss (nats/character)</text>
+<line x1='281.63' y1='363.45' x2='295.45' y2='363.45' style='stroke-width: 1.81; stroke-linecap: butt;' />
+<line x1='416.24' y1='363.45' x2='430.07' y2='363.45' style='stroke-width: 1.81; stroke: #E5262F; stroke-linecap: butt;' />
+<text x='303.16' y='367.73' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='105.38px' lengthAdjust='spacingAndGlyphs'>Training (smoothed)</text>
+<text x='437.77' y='367.73' style='font-size: 12.00px; font-family: "Helvetica Neue";' textLength='106.47px' lengthAdjust='spacingAndGlyphs'>Validation (held-out)</text>
+<text x='54.06' y='29.36' style='font-size: 16.00px; font-weight: bold; font-family: "Helvetica Neue";' textLength='207.32px' lengthAdjust='spacingAndGlyphs'>Training and validation loss</text>
+</g>
+</svg>

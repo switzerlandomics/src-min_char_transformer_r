@@ -18,7 +18,7 @@ REFERENCE_INPUT_URL <- paste0("https://raw.githubusercontent.com/karpathy/char-r
 default_config <- function() {
   list(input = "data/tiny_shakespeare.txt", output = "output", iterations = 2000L,
        context_length = 32L, embedding_size = 32L, feedforward_size = 64L,
-       lr = 0.001, seed = 42L, clip_norm = 1, log_interval = 100L,
+       lr = 0.001, seed = 666L, clip_norm = 1, log_interval = 100L,
        validation_interval = 500L, checkpoint_interval = 500L,
        sample_interval = 500L, sample_length = 180L,
        n_passages = 8L, passage_chars = 256L, train_fraction = 0.8,
@@ -141,13 +141,12 @@ make_experiment_dir <- function(parent, seed) {
 }
 
 append_sample <- function(path, model, vocab, prompt, iteration, validation_loss, config) {
-  prompt_indices <- encode_text(prompt, vocab)
-  generated <- with_sampling_seed(config$seed + 100000L + iteration,
-    sample_indices(model, prompt_indices, config$sample_length))
-  text <- decode_indices(generated, vocab)
+  sample <- make_generation_sample(model, vocab, prompt, iteration, validation_loss,
+    n = config$sample_length, seed = config$seed + 100000L + iteration)
   cat(sprintf("\n=== update %d | validation %.6f | prompt %s | temperature 1 ===\n",
               iteration, validation_loss, encodeString(prompt, quote = '"')),
-      prompt, text, "\n", file = path, append = TRUE, sep = "")
+      prompt, sample$generated_text, "\n", file = path, append = TRUE, sep = "")
+  invisible(sample)
 }
 
 make_attention_snapshot <- function(model, vocab, prompt, iteration) {
@@ -268,7 +267,10 @@ if (resume) {
   passage_metrics <- cbind(iteration = 0L, measured$passages)
   save_model(model, path("best_model.rds")); save_vocab(vocab, path("vocab.rds"))
   cat("", file = path("samples.txt"))
-  append_sample(path("samples.txt"), model, vocab, sample_prompt, 0L, best_loss, config)
+  initial_sample <- append_sample(path("samples.txt"), model, vocab,
+                                  sample_prompt, 0L, best_loss, config)
+  generation_result <- list(initial = initial_sample, best = initial_sample)
+  write_rds(generation_result, path("generation_comparison.rds"))
   iteration_start <- 0L; elapsed_before <- 0
   log_msg("MODEL", "context=%d | embedding=%d | feed-forward=%d | heads=1 | blocks=1 | parameters=%d",
           config$context_length, config$embedding_size, config$feedforward_size,
@@ -295,13 +297,33 @@ metadata$bigram_baseline_nats_per_char <- bigram_baseline(train_ids, validation_
     validation_plan, vocab$size)
 metadata$validation_plan <- validation_plan
 metadata$test_plan <- test_plan
+metadata$generation_prompt <- sample_prompt
+metadata$generation_seed <- as.integer(config$seed + 100000L)
+metadata$generation_temperature <- 1
+
+# Earlier runs already have a genuine initial sample in samples.txt, but no
+# structured comparison. Recover it when resuming, without resetting training.
+if (resume && !file.exists(path("generation_comparison.rds"))) {
+  initial_rows <- which(metrics$iteration == 0L)
+  restored <- if (length(initial_rows)) restore_generation_comparison(
+    experiment_dir, vocab, sample_prompt, config,
+    metrics$validation_loss_nats_per_char[initial_rows[1L]],
+    best_iteration, best_loss) else NULL
+  if (!is.null(restored)) {
+    write_rds(restored, path("generation_comparison.rds"))
+    log_msg("SAVE", "restored initial and best-validation text comparison")
+  } else log_msg("SAVE", "previous initial sample unavailable; no comparison generated")
+}
 
 # Plotting can fail independently of training, and is always reconstructed from
 # saved metrics and model-derived attention snapshots.
-render_plots <- function() {
-  if (!config$plot) return(invisible(FALSE))
-  tryCatch({ plot_experiment(experiment_dir); TRUE }, error = function(e) {
-    log_msg("PLOT", "render skipped: %s", conditionMessage(e)); FALSE
+render_monitor <- function() {
+  tryCatch({
+    if (config$plot) plot_experiment(experiment_dir)
+    else write_monitor_html(experiment_dir)
+    TRUE
+  }, error = function(e) {
+    log_msg("DISPLAY", "render skipped: %s", conditionMessage(e)); FALSE
   })
 }
 
@@ -323,7 +345,7 @@ persist <- function(iteration, elapsed, checkpoint_now = FALSE, make_plots = FAL
       vocab_chars = vocab$chars, train_size = length(train_ids))
     write_rds(snapshot, path("latest_checkpoint.rds"))
   }
-  if (make_plots) render_plots()
+  if (make_plots) render_monitor()
   invisible(NULL)
 }
 
@@ -334,7 +356,7 @@ if (!resume) {
             path("attention_snapshot.rds"))
   persist(0L, 0, checkpoint_now = TRUE, make_plots = TRUE)
 }
-if (config$plot) log_msg("PLOT", "open %s in your browser",
+log_msg("DISPLAY", "open %s in your browser",
                          normalizePath(path("training.html"), winslash = "/", mustWork = FALSE))
 log_msg("STAGE", "[3/5] Training | progress every %d | validation every %d | checkpoint every %d",
         config$log_interval, config$validation_interval, config$checkpoint_interval)
@@ -381,6 +403,15 @@ if (iteration_start < config$iterations) {
       if (measured$loss < best_loss) {
         best_loss <- measured$loss; best_iteration <- iteration
         save_model(model, path("best_model.rds"))
+        comparison_path <- path("generation_comparison.rds")
+        if (file.exists(comparison_path)) {
+          comparison <- readRDS(comparison_path)
+          comparison$best <- make_generation_sample(model, vocab, sample_prompt,
+            iteration, best_loss, n = comparison$initial$n_generated,
+            seed = comparison$initial$seed,
+            temperature = comparison$initial$temperature)
+          write_rds(comparison, comparison_path)
+        }
         log_msg("SAVE", "best validation model at update %d | %.6f nats/char",
                 iteration, best_loss)
       }
@@ -414,10 +445,13 @@ save_model(model, path("model.rds"))
 persist(last_completed, elapsed, checkpoint_now = TRUE, make_plots = TRUE)
 if (!stopped) {
   cat("\n", file = path("FINISHED"))
+  tryCatch(write_monitor_html(experiment_dir), error = function(e) {
+    log_msg("DISPLAY", "final HTML update skipped: %s", conditionMessage(e))
+  })
   log_msg("STAGE", "[5/5] Complete | updates=%d | time=%s | best validation=%.6f",
           last_completed, format_duration(elapsed), best_loss)
 } else log_msg("STAGE", "[5/5] Paused; remove STOP and use --resume to continue")
-log_msg("FILES", "%s | metrics.csv | samples.txt | best_model.rds | latest_checkpoint.rds",
+log_msg("FILES", "%s | metrics.csv | training.html | generation_comparison.txt | generation_comparison.rds | best_model.rds | latest_checkpoint.rds",
         normalizePath(experiment_dir, winslash = "/", mustWork = TRUE))
 
 if (config$test) {
