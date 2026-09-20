@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 710 430" role="img" aria-labelledby="title desc">
+  <title id="title">Causal attention mask for four input positions</title>
+  <desc id="desc">A four by four matrix has available cells on and below the diagonal and future positions masked above the diagonal. It is an illustration of permitted connections, not measured learned attention weights.</desc>
+  <style>text{font-family:Arial,Helvetica,sans-serif;fill:#23323c}.head{font-weight:700;font-size:23px}.label{font-size:17px;text-anchor:middle}.small{font-size:15px;fill:#52646f}.allowed{fill:#d9eee7;stroke:white;stroke-width:3}.masked{fill:#eff1f3;stroke:white;stroke-width:3}</style>
+  <text class="head" x="24" y="38">Causal attention mask</text>
+  <text class="small" x="24" y="66">Rows are predicting positions; columns are available input characters.</text>
+  <g class="label"><text x="265" y="111">T</text><text x="333" y="111">h</text><text x="401" y="111">e</text><text x="469" y="111">␠</text><text x="192" y="163">T</text><text x="192" y="231">h</text><text x="192" y="299">e</text><text x="192" y="367">␠</text></g>
+  <g><rect class="allowed" x="232" y="128" width="64" height="64"/><rect class="masked" x="300" y="128" width="64" height="64"/><rect class="masked" x="368" y="128" width="64" height="64"/><rect class="masked" x="436" y="128" width="64" height="64"/>
+    <rect class="allowed" x="232" y="196" width="64" height="64"/><rect class="allowed" x="300" y="196" width="64" height="64"/><rect class="masked" x="368" y="196" width="64" height="64"/><rect class="masked" x="436" y="196" width="64" height="64"/>
+    <rect class="allowed" x="232" y="264" width="64" height="64"/><rect class="allowed" x="300" y="264" width="64" height="64"/><rect class="allowed" x="368" y="264" width="64" height="64"/><rect class="masked" x="436" y="264" width="64" height="64"/>
+    <rect class="allowed" x="232" y="332" width="64" height="64"/><rect class="allowed" x="300" y="332" width="64" height="64"/><rect class="allowed" x="368" y="332" width="64" height="64"/><rect class="allowed" x="436" y="332" width="64" height="64"/>
+  </g>
+  <g class="small"><rect x="528" y="171" width="20" height="20" fill="#d9eee7"/><text x="560" y="187">Available</text><rect x="528" y="216" width="20" height="20" fill="#eff1f3"/><text x="560" y="232">Future: masked</text></g>
+</svg>

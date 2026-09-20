@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <title id="title">Recurrent state versus causal self-attention</title>
+  <desc id="desc">Left: the hidden state flows sequentially through four character positions. Right: the representation at the current position attends directly to preceding input positions; future targets are unavailable.</desc>
+  <style>
+    text{font-family:Arial,Helvetica,sans-serif;fill:#23323c}
+    .heading{font-size:22px;font-weight:700}.sub{font-size:15px;fill:#53646f}
+    .token{font-size:21px;font-weight:700;text-anchor:middle}.label{font-size:15px;text-anchor:middle}
+    .frame{fill:#fff;stroke:#cad3d8;stroke-width:1.5}.rnn{fill:#eaf2f9;stroke:#3778ab;stroke-width:1.8}
+    .att{fill:#e8f5ef;stroke:#258363;stroke-width:1.8}.wire{fill:none;stroke:#526976;stroke-width:2}
+    .arrow{marker-end:url(#arrow)}
+  </style>
+  <defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7Z" fill="#526976"/></marker></defs>
+  <rect class="frame" x="12" y="12" width="456" height="396" rx="14"/>
+  <rect class="frame" x="492" y="12" width="456" height="396" rx="14"/>
+  <text class="heading" x="35" y="52">A  Recurrent model</text>
+  <text class="sub" x="35" y="78">Information passes through successive hidden states.</text>
+  <g class="wire arrow"><path d="M120 196H154"/><path d="M210 196H244"/><path d="M300 196H334"/></g>
+  <g class="rnn"><rect x="64" y="167" width="56" height="58" rx="8"/><rect x="154" y="167" width="56" height="58" rx="8"/><rect x="244" y="167" width="56" height="58" rx="8"/><rect x="334" y="167" width="56" height="58" rx="8"/></g>
+  <g class="label"><text x="92" y="201">h₁</text><text x="182" y="201">h₂</text><text x="272" y="201">h₃</text><text x="362" y="201">h₄</text></g>
+  <g class="wire arrow"><path d="M92 271V229"/><path d="M182 271V229"/><path d="M272 271V229"/><path d="M362 271V229"/></g>
+  <g class="token"><text x="92" y="294">T</text><text x="182" y="294">h</text><text x="272" y="294">e</text><text x="362" y="294">␠</text></g>
+  <text class="sub" x="35" y="353">Each state receives the preceding state and its</text>
+  <text class="sub" x="35" y="376">current input before predicting the next character.</text>
+  <text class="heading" x="515" y="52">B  Causal attention</text>
+  <text class="sub" x="515" y="78">The current position can combine earlier input positions.</text>
+  <g class="att"><rect x="528" y="138" width="65" height="57" rx="8"/><rect x="632" y="138" width="65" height="57" rx="8"/><rect x="736" y="138" width="65" height="57" rx="8"/><rect x="840" y="138" width="65" height="57" rx="8"/><rect x="713" y="280" width="100" height="48" rx="9"/></g>
+  <g class="token"><text x="560" y="172">T</text><text x="664" y="172">h</text><text x="768" y="172">e</text><text x="872" y="172">␠</text></g>
+  <g class="wire arrow"><path d="M560 195L735 279"/><path d="M664 195L748 279"/><path d="M768 195V279"/><path d="M872 195L799 279"/></g>
+  <text class="label" x="763" y="309">Attention</text>
+  <text class="sub" x="515" y="353">These are supplied input characters. The future</text>
+  <text class="sub" x="515" y="376">target is masked and cannot be consulted.</text>
+</svg>
