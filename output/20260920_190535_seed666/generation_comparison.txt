@@ -1,0 +1,20 @@
+Text generation: before and after training
+Both samples use the same prompt, sampling seed, temperature and length.
+The checkpoint is selected by validation loss, not by sample readability.
+
+=== Before training | update 0 | validation 4.182720 nats/char | prompt "Firs" | temperature 1 | sampling seed 100666 ===
+Firsxg.BFPFbzvfMYbBwA
+tZrQqRZy3jmrhtngmq;!
+aWaSpLHIf'eauW,kDNOd,P;DLUVCjasqLZGPwpoIMwrg3&lThgLsyqhFQ-SSuw!Kfj$mlpAw.zdesCxn'q?&&?$T
+abzuNubQbg$zXogkULA'vfbY3:oSXIcn-UjUAzY:U YVT3pK.$Q3
+
+=== Best-validation checkpoint | update 295000 | validation 1.747230 nats/char | prompt "Firs" | temperature 1 | sampling seed 100666 ===
+Firse
+Maring weld sound, a
+That look; our pressay
+cause cold ostandont: sot, so both unfame,
+Unbuit me whost to be bood eson.
+
+Comful
+To and my gal my greath fooble, that you,
+She no b

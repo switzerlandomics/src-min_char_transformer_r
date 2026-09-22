@@ -1,19 +1,16 @@
 # min-char-transformer in base R
 
 A small, CPU-only **decoder-style character Transformer** written directly in R.
-This is the next learning project after Karpathy's minimal character RNN which we independently built in R [here](https://switzerlandomics.ch/blog/2026-09-19-building-a-rnn-language-model-from-scratch-in-r/):
-the task is still to predict the next character of Tiny Shakespeare, but the
-network uses **causal self-attention** in place of a recurrent hidden state.
+We previously made a minimal character RNN equivalent to Karpathy's which we independently built in R [here](https://switzerlandomics.ch/blog/2026-09-19-building-a-rnn-language-model-from-scratch-in-r/):
+the task is still to predict the next character of Tiny Shakespeare, but the network uses **causal self-attention** in place of a recurrent hidden state.
 Character/position embeddings, the attention block, layer normalisation,
-feed-forward network, cross-entropy loss, backward pass and Adam updates are
-implemented explicitly with base R matrices. There is no Python bridge,
-pretrained model, GPU, packaged neural network or automatic differentiation.
+feed-forward network, cross-entropy loss, backward pass and Adam updates are implemented explicitly with base R matrices. 
+There is no Python bridge, pretrained model, GPU, packaged neural network or automatic differentiation.
 `ggplot2` is optional and used **only** to create plots.
 
 This is deliberately a single-head, single-block educational Transformer,
 not a reproduction of GPT-2 or a demonstration of modern large-model performance.
-The objective is to make the numerical mechanism and experimental evidence
-inspectable in one small repository.
+The objective is to make the numerical mechanism and experimental evidence inspectable in one small repository.
 
 <picture>
   <source media="(max-width: 600px)" srcset="docs/figures/transformer_model_mobile.svg">
@@ -44,16 +41,12 @@ install.packages("ggplot2")
 Rscript experiments/run.R --iterations=2000
 ```
 
-The runner downloads Tiny Shakespeare on the first normal run if its file is
-missing. With no plotting package, use `--no-plot`. The 2,000-update command is
-an initial experiment, not a guaranteed training time or quality target.
+The runner downloads Tiny Shakespeare on the first normal run if its file is missing. With no plotting package, use `--no-plot`. The 2,000-update command is an initial experiment, not a guaranteed training time or quality target.
 
 
 ### Choose a training duration
 
-The default run performs 2,000 updates and takes approximately 20–30 seconds
-on our reference laptop. Longer runs use the same model architecture and
-training data, but allow more opportunities for the model to improve.
+The default run performs 2,000 updates and takes approximately 20–30 seconds on our reference laptop. Longer runs use the same model architecture and training data, but allow more opportunities for the model to improve.
 
 **Quick demonstration (approximately 30 seconds):**
 
@@ -90,11 +83,9 @@ Rscript experiments/run.R \
 ```
 
 These timings are approximate and depend on the computer and plotting overhead.
-Longer training does not guarantee better predictions: the runner retains the
-checkpoint with the lowest measured validation loss.
+Longer training does not guarantee better predictions: the runner retains the checkpoint with the lowest measured validation loss.
 
-Open the experiment's `training.html` to follow its learning curve and compare
-text generated before training with text from the best-validation checkpoint.
+Open the experiment's `training.html` to follow its learning curve and compare text generated before training with text from the best-validation checkpoint.
 
 The longer-run commands deliberately reduce how often the runner validates, creates samples and saves checkpoints. Otherwise, a 300,000-update run would repeatedly generate the same figures and samples at the short-run frequency.
 
@@ -126,8 +117,9 @@ Rscript experiments/run.R \
 
 ## Heaviest runs tested
 
-Here are the versions I ran which are in my results output dir.
-20260920_170839_seed666
+I ran different versions which are are ignored by the gitignore. Only the final run is in my results output dir.
+
+20260920_170839_seed666  
 time=27m 22s:
 
 ```sh
@@ -140,7 +132,8 @@ time=27m 22s:
 ```
 
 Double the context from 32 to 64 characters, increases the model width moderately, and trains for 100,000 updates. It is a sensible next experiment for testing whether more context and capacity improve the generated text, without committing to the much larger run.
-20260920_175829_seed666
+
+20260920_175829_seed666  
 time=1h 01m 36s:
 
 ```sh
@@ -155,7 +148,8 @@ Rscript experiments/run.R \
   --sample-interval=10000
 ```
 
-Next we doubled the context from 64 to 128 characters while keeping model capacity and training updates unchanged, to test whether access to more preceding text improves prediction and generated coherence.
+Next we doubled the context from 64 to 128 characters while keeping model capacity and training updates unchanged, to test whether access to more preceding text improves prediction and generated coherence.  
+
 time= ETA 2.5h
 
 ```sh
@@ -241,31 +235,15 @@ must be a multiple of context length). See `--help` for all CLI options.
 
 ## Monitoring and interpreting a run
 
-Each experiment creates a timestamped directory under `output/`. The console
-and `experiment.log` record the configuration, dataset sizes, training progress,
-elapsed time, ETA, validation measurements and checkpoint updates. Open the
-run's `training.html` in a browser to watch the curves refresh independently
-of training. Directly below the learning curve, **Text generation: before and
-after training** displays the real iteration-0 output alongside text produced
-by the lowest-measured-validation-loss checkpoint (`best_model.rds`). The two
-samples use the **same prompt, sampling seed, temperature and output length**.
-The saved text is not edited or selected for readability. The comparison
-refreshes when a better checkpoint is saved; a completed run's page stops
-automatically refreshing so its text can be read and copied.
+Each experiment creates a timestamped directory under `output/`. The console and `experiment.log` record the configuration, dataset sizes, training progress, elapsed time, ETA, validation measurements and checkpoint updates. Open the run's `training.html` in a browser to watch the curves refresh independently of training. Directly below the learning curve, **Text generation: before and after training** displays the real iteration-0 output alongside text produced by the lowest-measured-validation-loss checkpoint (`best_model.rds`). The two samples use the **same prompt, sampling seed, temperature and output length**.
+The saved text is not edited or selected for readability. The comparison refreshes when a better checkpoint is saved; a completed run's page stops automatically refreshing so its text can be read and copied.
 
-The same verified comparison is saved as **`generation_comparison.txt`** for
-copying directly into a blog post, with `generation_comparison.rds` preserving
-structured provenance: prompt, generation settings, exact text, checkpoint
-iteration and validation loss.
-`training.html` is also written with `--no-plot`: its text comparison does not
-need ggplot2. `samples.txt` retains the periodic generation history, using a separate
+The same verified comparison is saved as **`generation_comparison.txt`** for copying directly into a blog post, with `generation_comparison.rds` preserving structured provenance: prompt, generation settings, exact text, checkpoint iteration and validation loss.
+`training.html` is also written with `--no-plot`: its text comparison does not need ggplot2. `samples.txt` retains the periodic generation history, using a separate
 seed for each periodic sample and is not the controlled before/after comparison.
-A lower validation loss does not guarantee that any one sampled passage reads
-better, particularly for this small 32-character-context model.
+A lower validation loss does not guarantee that any one sampled passage reads better, particularly for this small 32-character-context model.
 
-With plotting enabled, the runner produces `training.png`, a separately laid-out
-`training_mobile.png`, `validation_detail.png` and `attention.png`. The last
-figure displays actual attention weights computed from the current checkpoint.
+With plotting enabled, the runner produces `training.png`, a separately laid-out `training_mobile.png`, `validation_detail.png` and `attention.png`. The last figure displays actual attention weights computed from the current checkpoint.
 To recreate plots and the HTML page from saved experiment outputs:
 
 ```sh
@@ -273,32 +251,15 @@ Rscript experiments/plot_results.R output/YOUR_EXPERIMENT_DIRECTORY
 cat output/YOUR_EXPERIMENT_DIRECTORY/generation_comparison.txt
 ```
 
-The first command creates or refreshes the HTML and text comparison from saved
-experiment evidence; the second prints its genuine before/after samples in your
-terminal, ready to copy into a blog draft. Neither command retrains the model.
+The first command creates or refreshes the HTML and text comparison from saved experiment evidence; the second prints its genuine before/after samples in your terminal, ready to copy into a blog draft. Neither command retrains the model.
 
-For a run created before the comparison feature was added, this command also
-recovers the **original** iteration-0 text from `samples.txt` and generates a
-matching sample from its saved `best_model.rds`. Its original input corpus,
-metadata and vocabulary must still be available. It does not retrain or invent
-the initial sample. When plotting is disabled, the structured comparison is
-still saved and displayed as selectable text in `training.html`, even without
-`ggplot2`. To add the optional learning curves later, install `ggplot2` and run
-the plotting command above.
+For a run created before the comparison feature was added, this command also recovers the **original** iteration-0 text from `samples.txt` and generates a matching sample from its saved `best_model.rds`. Its original input corpus, metadata and vocabulary must still be available. It does not retrain or invent the initial sample. When plotting is disabled, the structured comparison is still saved and displayed as selectable text in `training.html`, even without `ggplot2`. To add the optional learning curves later, install `ggplot2` and run the plotting command above.
 
-**Loss is measured in nats per character; lower is better.** A uniform
-predictor has loss `log(vocabulary_size)`. The runner also evaluates an
-add-one-smoothed character bigram baseline fitted on the training split only.
+**Loss is measured in nats per character; lower is better.** A uniform predictor has loss `log(vocabulary_size)`. The runner also evaluates an add-one-smoothed character bigram baseline fitted on the training split only.
 The training curve is exponentially smoothed loss from training windows.
-Validation is the average loss over fixed held-out passages and is not smoothed;
-the two lines are not identical estimators of generalisation error.
+Validation is the average loss over fixed held-out passages and is not smoothed; the two lines are not identical estimators of generalisation error.
 
-The input is split contiguously into **80% training, 10% validation and 10%
-test**. Validation selects eight non-overlapping passages of 256 transitions
-by default; each passage is evaluated in disjoint context-sized windows with
-context reset at each window boundary. The test portion is never evaluated
-by routine training or checkpoint selection. After finalising the training
-procedure, run the selected checkpoint on held-out test passages **once**:
+The input is split contiguously into **80% training, 10% validation and 10% test**. Validation selects eight non-overlapping passages of 256 transitions by default; each passage is evaluated in disjoint context-sized windows with context reset at each window boundary. The test portion is never evaluated by routine training or checkpoint selection. After finalising the training procedure, run the selected checkpoint on held-out test passages **once**:
 
 ```sh
 Rscript experiments/run.R \
@@ -307,8 +268,7 @@ Rscript experiments/run.R \
   --test
 ```
 
-`--test` refuses to overwrite an existing `test_results.rds` in that run. Avoid
-using its result to tune the model and then reporting it as untouched test data.
+`--test` refuses to overwrite an existing `test_results.rds` in that run. Avoid using its result to tune the model and then reporting it as untouched test data.
 See [Validation protocol](docs/03_validation.md).
 
 ## Stop, resume and saved files
@@ -328,11 +288,7 @@ Rscript experiments/run.R \
   --iterations=10000
 ```
 
-A complete checkpoint saves the optimiser moments, training-window order and
-position, random-number state, metrics and model parameters. `model.rds` alone
-cannot resume training. Dataset checksum and model-defining settings are checked
-before resumption; only reporting intervals, plotting and the total update
-target may change.
+A complete checkpoint saves the optimiser moments, training-window order and position, random-number state, metrics and model parameters. `model.rds` alone cannot resume training. Dataset checksum and model-defining settings are checked before resumption; only reporting intervals, plotting and the total update target may change.
 
 | Output | Meaning |
 |---|---|
@@ -347,9 +303,91 @@ target may change.
 | `training.html`, `*.png` | Local HTML monitor (also available with `--no-plot`) and optional figures |
 | `FINISHED` | Normal completion marker; removed on resumption |
 
-The original downloaded corpus, checkpoints, logs and full experiment outputs
-are excluded from Git. Publication figures should be copied to `docs/figures/`
-only after checking that they correspond to the documented reference run.
+The original downloaded corpus, checkpoints, logs and full experiment outputs are excluded from Git. Publication figures should be copied to `docs/figures/` only after checking that they correspond to the documented reference run.
+
+## End results
+
+We are not too concerned with producing eloquent poetry.
+We are mostly focused on accurate math and model design - once that is in place we can simply scale on larger hardware.
+
+Reproducible experiment: [`output/20260920_190535_seed666/`](output/20260920_190535_seed666/)
+
+### Learned attention
+
+| Before training | After training |
+|:---:|:---:|
+| ![Initial attention](output/20260920_190535_seed666/attention_initial.png) | ![Learned attention](output/20260920_190535_seed666/attention.png) |
+
+### Training and validation
+
+![Training and validation loss](output/20260920_190535_seed666/training.png)
+
+### Validation details
+
+![Validation loss by held-out passage](output/20260920_190535_seed666/validation_detail.png)
+
+
+The initial run at a validation around 4 shows basically random nonsense:
+
+**Update 0 - validation 4.18 - prompt "Firs"**  
+```text
+xg.BFPFbzvfMYbBwA  
+
+tZrQqRZy3jmrhtngmq;!  
+
+aWaSpLHIf'eauW,kDNOd,P;  
+DLUVCjasqLZGPwpoIMwrg3&  
+lThgLsyqhFQ-SSuw!Kfj$ml  
+pAw.zdesCxn'q?&&?$T*
+```
+
+---
+
+After a short time it starts to have a recognisable structure:
+
+**Update 250,000 - validation 1.77 - prompt "Firs"** 
+
+```text
+First stand in till if royar douceving
+Clinif;
+You must! cousin and figher
+To way that lend
+And loves not a thee
+This be burgice is pabarandy, do brich nigh;
+Net me town.
+
+NORTHUMB:
+Go
+```
+
+---
+
+**update 260,000 - validation 1.76 - prompt "Firs"** 
+```text
+First utsern sunfried rests 
+and to galinght that 
+dear's cope heaving in the utbuar in 
+must at and smethere batted?
+
+CORIOLANUS:
+Host gaitie, splaint is she pevers
+Inf, sirving there wa
+```
+---
+
+**Update 295,000 - validation 1.74 - prompt "Firs"** 
+```text
+e
+Maring weld sound, a
+That look; our pressay
+cause cold ostandont: sot, so both unfame,
+Unbuit me whost to be bood eson.
+Comful
+To and my gal my greath fooble, that you,
+She no b
+```
+
+The generated text remains imperfect, but the lower validation loss and increasingly recognisable structure show that our single-block Transformer learns from text on a laptop CPU. 
 
 ## Code and documentation
 
@@ -365,10 +403,7 @@ only after checking that they correspond to the documented reference run.
 | `docs/` | Historical context, worked mathematics, evaluation and results guidance |
 
 For the architectural comparison, see [RNN versus Transformer](docs/05_rnn_comparison.md).
-The RNN can carry hidden state across training windows while this Transformer
-only sees its supplied context; the two models also differ in parameter count,
-training split and optimiser. Historical curves must not be called a controlled
-head-to-head benchmark without retraining and standardising those conditions.
+The RNN can carry hidden state across training windows while this Transformer only sees its supplied context; the two models also differ in parameter count, training split and optimiser. Historical curves must not be called a controlled head-to-head benchmark without retraining and standardising those conditions.
 
 ## Important note for next time
 
@@ -377,8 +412,6 @@ Planned improvement: automatic experiment configuration report
 Update `experiments/run.R` to automatically save a human-readable `run_command.txt` in every experiment’s output directory. The report should include the original command entered by the user, a reproducible command containing all resolved parameters (including defaults), and a neatly formatted summary of the model, training, validation, sampling and checkpoint settings. Any configuration changes made when resuming an experiment should also be recorded.
 
 The report should be generated automatically, without requiring the temporary `print_params.sh` script.
-
-
 
 ## References and attribution
 
@@ -389,4 +422,4 @@ The earlier project follows Karpathy's
 and [2015 article](https://karpathy.github.io/2015/05/21/rnn-effectiveness/).
 GPT-2 is a much larger decoder-only Transformer language model; this repository
 teaches a related architectural mechanism but does not reproduce its model or
-training procedure. No claim is made that this is the first R Transformer.
+training procedure. 

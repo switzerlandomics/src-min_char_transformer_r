@@ -1,0 +1,245 @@
+2026-09-20 19:05:35 | START  | min-char-transformer | base R | CPU-only | new experiment
+2026-09-20 19:05:35 | STAGE  | [1/5] Preparing text and fixed evaluation passages
+2026-09-20 19:05:36 | DATA   | characters=1115394 | vocabulary=65 | train=892315 | validation=111539 | test=111540
+2026-09-20 19:05:36 | DATA   | validation=8 fixed passages x 256 transitions | md5=6fb458f1232090904fb40fe944165e91
+2026-09-20 19:05:36 | STAGE  | [2/5] Initialising one-block causal Transformer
+2026-09-20 19:05:37 | MODEL  | context=128 | embedding=48 | feed-forward=96 | heads=1 | blocks=1 | parameters=31313
+2026-09-20 19:05:37 | MODEL  | optimiser=Adam | lr=0.001 | gradient norm clip=1
+2026-09-20 19:05:37 | BASE   | uniform=4.174387 | bigram=2.469208 | initial validation=4.182720 nats/char
+2026-09-20 19:05:39 | DISPLAY | open /Users/dylanlawless/so/src/min_char_transformer_r/output/20260920_190535_seed666/training.html in your browser
+2026-09-20 19:05:39 | STAGE  | [3/5] Training | progress every 2000 | validation every 5000 | checkpoint every 10000
+2026-09-20 19:06:37 | TRAIN  | [........................]   0.7% | 2000/300000 | elapsed 58s | ETA 2h 25m 05s | loss=2.4542 nats/char
+2026-09-20 19:07:36 | TRAIN  | [........................]   1.3% | 4000/300000 | elapsed 1m 57s | ETA 2h 24m 47s | loss=2.3224 nats/char
+2026-09-20 19:08:04 | SAVE   | best validation model at update 5000 | 2.250876 nats/char
+2026-09-20 19:08:04 | VALID  | loss=2.250876 nats/char | best=2.250876 at update 5000
+2026-09-20 19:08:37 | TRAIN  | [........................]   2.0% | 6000/300000 | elapsed 2m 58s | ETA 2h 25m 20s | loss=2.1565 nats/char
+2026-09-20 19:09:31 | TRAIN  | [........................]   2.7% | 8000/300000 | elapsed 3m 52s | ETA 2h 21m 07s | loss=2.0694 nats/char
+2026-09-20 19:10:21 | TRAIN  | [........................]   3.3% | 10000/300000 | elapsed 4m 42s | ETA 2h 16m 31s | loss=2.0223 nats/char
+2026-09-20 19:10:23 | SAVE   | best validation model at update 10000 | 2.073702 nats/char
+2026-09-20 19:10:23 | VALID  | loss=2.073702 nats/char | best=2.073702 at update 10000
+2026-09-20 19:11:16 | TRAIN  | [........................]   4.0% | 12000/300000 | elapsed 5m 37s | ETA 2h 14m 44s | loss=1.9686 nats/char
+2026-09-20 19:12:06 | TRAIN  | [=.......................]   4.7% | 14000/300000 | elapsed 6m 27s | ETA 2h 11m 51s | loss=1.9427 nats/char
+2026-09-20 19:12:33 | SAVE   | best validation model at update 15000 | 1.998316 nats/char
+2026-09-20 19:12:33 | VALID  | loss=1.998316 nats/char | best=1.998316 at update 15000
+2026-09-20 19:12:59 | TRAIN  | [=.......................]   5.3% | 16000/300000 | elapsed 7m 20s | ETA 2h 10m 11s | loss=1.9095 nats/char
+2026-09-20 19:13:50 | TRAIN  | [=.......................]   6.0% | 18000/300000 | elapsed 8m 11s | ETA 2h 08m 08s | loss=1.9232 nats/char
+2026-09-20 19:14:40 | TRAIN  | [=.......................]   6.7% | 20000/300000 | elapsed 9m 01s | ETA 2h 06m 20s | loss=1.9013 nats/char
+2026-09-20 19:14:42 | SAVE   | best validation model at update 20000 | 1.977386 nats/char
+2026-09-20 19:14:42 | VALID  | loss=1.977386 nats/char | best=1.977386 at update 20000
+2026-09-20 19:15:37 | TRAIN  | [=.......................]   7.3% | 22000/300000 | elapsed 9m 59s | ETA 2h 06m 04s | loss=1.8762 nats/char
+2026-09-20 19:16:31 | TRAIN  | [=.......................]   8.0% | 24000/300000 | elapsed 10m 52s | ETA 2h 05m 02s | loss=1.8685 nats/char
+2026-09-20 19:16:58 | SAVE   | best validation model at update 25000 | 1.941892 nats/char
+2026-09-20 19:16:58 | VALID  | loss=1.941892 nats/char | best=1.941892 at update 25000
+2026-09-20 19:17:24 | TRAIN  | [==......................]   8.7% | 26000/300000 | elapsed 11m 46s | ETA 2h 03m 55s | loss=1.8605 nats/char
+2026-09-20 19:18:15 | TRAIN  | [==......................]   9.3% | 28000/300000 | elapsed 12m 36s | ETA 2h 02m 24s | loss=1.8458 nats/char
+2026-09-20 19:19:06 | TRAIN  | [==......................]  10.0% | 30000/300000 | elapsed 13m 27s | ETA 2h 01m 02s | loss=1.8358 nats/char
+2026-09-20 19:19:07 | SAVE   | best validation model at update 30000 | 1.899301 nats/char
+2026-09-20 19:19:07 | VALID  | loss=1.899301 nats/char | best=1.899301 at update 30000
+2026-09-20 19:20:00 | TRAIN  | [==......................]  10.7% | 32000/300000 | elapsed 14m 21s | ETA 2h 00m 11s | loss=1.8442 nats/char
+2026-09-20 19:20:51 | TRAIN  | [==......................]  11.3% | 34000/300000 | elapsed 15m 12s | ETA 1h 58m 53s | loss=1.8486 nats/char
+2026-09-20 19:21:16 | VALID  | loss=1.905292 nats/char | best=1.899301 at update 30000
+2026-09-20 19:21:43 | TRAIN  | [==......................]  12.0% | 36000/300000 | elapsed 16m 04s | ETA 1h 57m 47s | loss=1.8096 nats/char
+2026-09-20 19:22:33 | TRAIN  | [===.....................]  12.7% | 38000/300000 | elapsed 16m 54s | ETA 1h 56m 34s | loss=1.8192 nats/char
+2026-09-20 19:23:24 | TRAIN  | [===.....................]  13.3% | 40000/300000 | elapsed 17m 45s | ETA 1h 55m 24s | loss=1.8163 nats/char
+2026-09-20 19:23:25 | SAVE   | best validation model at update 40000 | 1.874800 nats/char
+2026-09-20 19:23:25 | VALID  | loss=1.874800 nats/char | best=1.874800 at update 40000
+2026-09-20 19:24:18 | TRAIN  | [===.....................]  14.0% | 42000/300000 | elapsed 18m 40s | ETA 1h 54m 37s | loss=1.8219 nats/char
+2026-09-20 19:25:09 | TRAIN  | [===.....................]  14.7% | 44000/300000 | elapsed 19m 30s | ETA 1h 53m 27s | loss=1.7687 nats/char
+2026-09-20 19:25:34 | VALID  | loss=1.888884 nats/char | best=1.874800 at update 40000
+2026-09-20 19:26:01 | TRAIN  | [===.....................]  15.3% | 46000/300000 | elapsed 20m 22s | ETA 1h 52m 26s | loss=1.7743 nats/char
+2026-09-20 19:26:51 | TRAIN  | [===.....................]  16.0% | 48000/300000 | elapsed 21m 12s | ETA 1h 51m 18s | loss=1.7805 nats/char
+2026-09-20 19:27:41 | TRAIN  | [====....................]  16.7% | 50000/300000 | elapsed 22m 02s | ETA 1h 50m 11s | loss=1.7684 nats/char
+2026-09-20 19:27:42 | SAVE   | best validation model at update 50000 | 1.864416 nats/char
+2026-09-20 19:27:42 | VALID  | loss=1.864416 nats/char | best=1.864416 at update 50000
+2026-09-20 19:28:35 | TRAIN  | [====....................]  17.3% | 52000/300000 | elapsed 22m 56s | ETA 1h 49m 24s | loss=1.7901 nats/char
+2026-09-20 19:29:26 | TRAIN  | [====....................]  18.0% | 54000/300000 | elapsed 23m 47s | ETA 1h 48m 21s | loss=1.7868 nats/char
+2026-09-20 19:29:54 | SAVE   | best validation model at update 55000 | 1.849400 nats/char
+2026-09-20 19:29:54 | VALID  | loss=1.849400 nats/char | best=1.849400 at update 55000
+2026-09-20 19:30:21 | TRAIN  | [====....................]  18.7% | 56000/300000 | elapsed 24m 42s | ETA 1h 47m 38s | loss=1.7542 nats/char
+2026-09-20 19:31:12 | TRAIN  | [====....................]  19.3% | 58000/300000 | elapsed 25m 33s | ETA 1h 46m 35s | loss=1.7744 nats/char
+2026-09-20 19:32:03 | TRAIN  | [====....................]  20.0% | 60000/300000 | elapsed 26m 24s | ETA 1h 45m 35s | loss=1.7681 nats/char
+2026-09-20 19:32:04 | SAVE   | best validation model at update 60000 | 1.842162 nats/char
+2026-09-20 19:32:04 | VALID  | loss=1.842162 nats/char | best=1.842162 at update 60000
+2026-09-20 19:32:57 | TRAIN  | [====....................]  20.7% | 62000/300000 | elapsed 27m 18s | ETA 1h 44m 47s | loss=1.7765 nats/char
+2026-09-20 19:33:47 | TRAIN  | [=====...................]  21.3% | 64000/300000 | elapsed 28m 08s | ETA 1h 43m 46s | loss=1.7566 nats/char
+2026-09-20 19:34:13 | VALID  | loss=1.853636 nats/char | best=1.842162 at update 60000
+2026-09-20 19:34:39 | TRAIN  | [=====...................]  22.0% | 66000/300000 | elapsed 29m 00s | ETA 1h 42m 50s | loss=1.7737 nats/char
+2026-09-20 19:35:30 | TRAIN  | [=====...................]  22.7% | 68000/300000 | elapsed 29m 51s | ETA 1h 41m 49s | loss=1.7691 nats/char
+2026-09-20 19:36:21 | TRAIN  | [=====...................]  23.3% | 70000/300000 | elapsed 30m 42s | ETA 1h 40m 52s | loss=1.7595 nats/char
+2026-09-20 19:36:22 | SAVE   | best validation model at update 70000 | 1.831575 nats/char
+2026-09-20 19:36:22 | VALID  | loss=1.831575 nats/char | best=1.831575 at update 70000
+2026-09-20 19:37:18 | TRAIN  | [=====...................]  24.0% | 72000/300000 | elapsed 31m 39s | ETA 1h 40m 15s | loss=1.7493 nats/char
+2026-09-20 19:38:16 | TRAIN  | [=====...................]  24.7% | 74000/300000 | elapsed 32m 37s | ETA 1h 39m 36s | loss=1.7804 nats/char
+2026-09-20 19:38:43 | VALID  | loss=1.840586 nats/char | best=1.831575 at update 70000
+2026-09-20 19:39:13 | TRAIN  | [======..................]  25.3% | 76000/300000 | elapsed 33m 34s | ETA 1h 38m 55s | loss=1.7692 nats/char
+2026-09-20 19:40:09 | TRAIN  | [======..................]  26.0% | 78000/300000 | elapsed 34m 30s | ETA 1h 38m 12s | loss=1.7532 nats/char
+2026-09-20 19:41:03 | TRAIN  | [======..................]  26.7% | 80000/300000 | elapsed 35m 24s | ETA 1h 37m 22s | loss=1.7560 nats/char
+2026-09-20 19:41:05 | SAVE   | best validation model at update 80000 | 1.821370 nats/char
+2026-09-20 19:41:05 | VALID  | loss=1.821370 nats/char | best=1.821370 at update 80000
+2026-09-20 19:42:02 | TRAIN  | [======..................]  27.3% | 82000/300000 | elapsed 36m 23s | ETA 1h 36m 44s | loss=1.7552 nats/char
+2026-09-20 19:42:54 | TRAIN  | [======..................]  28.0% | 84000/300000 | elapsed 37m 15s | ETA 1h 35m 48s | loss=1.7389 nats/char
+2026-09-20 19:43:20 | VALID  | loss=1.822398 nats/char | best=1.821370 at update 80000
+2026-09-20 19:43:49 | TRAIN  | [======..................]  28.7% | 86000/300000 | elapsed 38m 10s | ETA 1h 34m 59s | loss=1.7553 nats/char
+2026-09-20 19:44:42 | TRAIN  | [=======.................]  29.3% | 88000/300000 | elapsed 39m 03s | ETA 1h 34m 04s | loss=1.7281 nats/char
+2026-09-20 19:45:34 | TRAIN  | [=======.................]  30.0% | 90000/300000 | elapsed 39m 55s | ETA 1h 33m 08s | loss=1.7246 nats/char
+2026-09-20 19:45:35 | SAVE   | best validation model at update 90000 | 1.815599 nats/char
+2026-09-20 19:45:35 | VALID  | loss=1.815599 nats/char | best=1.815599 at update 90000
+2026-09-20 19:46:29 | TRAIN  | [=======.................]  30.7% | 92000/300000 | elapsed 40m 50s | ETA 1h 32m 19s | loss=1.7337 nats/char
+2026-09-20 19:47:21 | TRAIN  | [=======.................]  31.3% | 94000/300000 | elapsed 41m 42s | ETA 1h 31m 23s | loss=1.7554 nats/char
+2026-09-20 19:47:48 | SAVE   | best validation model at update 95000 | 1.803948 nats/char
+2026-09-20 19:47:48 | VALID  | loss=1.803948 nats/char | best=1.803948 at update 95000
+2026-09-20 19:48:15 | TRAIN  | [=======.................]  32.0% | 96000/300000 | elapsed 42m 36s | ETA 1h 30m 31s | loss=1.7396 nats/char
+2026-09-20 19:49:07 | TRAIN  | [=======.................]  32.7% | 98000/300000 | elapsed 43m 28s | ETA 1h 29m 35s | loss=1.7254 nats/char
+2026-09-20 19:49:58 | TRAIN  | [========................]  33.3% | 100000/300000 | elapsed 44m 20s | ETA 1h 28m 39s | loss=1.7255 nats/char
+2026-09-20 19:49:59 | VALID  | loss=1.808539 nats/char | best=1.803948 at update 95000
+2026-09-20 19:50:52 | TRAIN  | [========................]  34.0% | 102000/300000 | elapsed 45m 13s | ETA 1h 27m 47s | loss=1.7458 nats/char
+2026-09-20 19:51:44 | TRAIN  | [========................]  34.7% | 104000/300000 | elapsed 46m 05s | ETA 1h 26m 51s | loss=1.7482 nats/char
+2026-09-20 19:52:10 | VALID  | loss=1.805446 nats/char | best=1.803948 at update 95000
+2026-09-20 19:52:36 | TRAIN  | [========................]  35.3% | 106000/300000 | elapsed 46m 58s | ETA 1h 25m 57s | loss=1.7325 nats/char
+2026-09-20 19:53:28 | TRAIN  | [========................]  36.0% | 108000/300000 | elapsed 47m 49s | ETA 1h 25m 00s | loss=1.7526 nats/char
+2026-09-20 19:54:19 | TRAIN  | [========................]  36.7% | 110000/300000 | elapsed 48m 40s | ETA 1h 24m 04s | loss=1.7269 nats/char
+2026-09-20 19:54:19 | VALID  | loss=1.811985 nats/char | best=1.803948 at update 95000
+2026-09-20 19:55:13 | TRAIN  | [========................]  37.3% | 112000/300000 | elapsed 49m 34s | ETA 1h 23m 12s | loss=1.7366 nats/char
+2026-09-20 19:56:04 | TRAIN  | [=========...............]  38.0% | 114000/300000 | elapsed 50m 25s | ETA 1h 22m 15s | loss=1.7129 nats/char
+2026-09-20 19:56:30 | VALID  | loss=1.813698 nats/char | best=1.803948 at update 95000
+2026-09-20 19:56:56 | TRAIN  | [=========...............]  38.7% | 116000/300000 | elapsed 51m 17s | ETA 1h 21m 22s | loss=1.7323 nats/char
+2026-09-20 19:57:48 | TRAIN  | [=========...............]  39.3% | 118000/300000 | elapsed 52m 09s | ETA 1h 20m 26s | loss=1.6965 nats/char
+2026-09-20 19:58:39 | TRAIN  | [=========...............]  40.0% | 120000/300000 | elapsed 53m 00s | ETA 1h 19m 30s | loss=1.7131 nats/char
+2026-09-20 19:58:40 | SAVE   | best validation model at update 120000 | 1.790166 nats/char
+2026-09-20 19:58:40 | VALID  | loss=1.790166 nats/char | best=1.790166 at update 120000
+2026-09-20 19:59:34 | TRAIN  | [=========...............]  40.7% | 122000/300000 | elapsed 53m 55s | ETA 1h 18m 39s | loss=1.7213 nats/char
+2026-09-20 20:00:25 | TRAIN  | [=========...............]  41.3% | 124000/300000 | elapsed 54m 46s | ETA 1h 17m 44s | loss=1.7333 nats/char
+2026-09-20 20:00:51 | VALID  | loss=1.798259 nats/char | best=1.790166 at update 120000
+2026-09-20 20:01:18 | TRAIN  | [==========..............]  42.0% | 126000/300000 | elapsed 55m 39s | ETA 1h 16m 51s | loss=1.7341 nats/char
+2026-09-20 20:02:09 | TRAIN  | [==========..............]  42.7% | 128000/300000 | elapsed 56m 30s | ETA 1h 15m 55s | loss=1.7172 nats/char
+2026-09-20 20:03:00 | TRAIN  | [==========..............]  43.3% | 130000/300000 | elapsed 57m 22s | ETA 1h 15m 01s | loss=1.7320 nats/char
+2026-09-20 20:03:01 | VALID  | loss=1.794404 nats/char | best=1.790166 at update 120000
+2026-09-20 20:03:54 | TRAIN  | [==========..............]  44.0% | 132000/300000 | elapsed 58m 15s | ETA 1h 14m 08s | loss=1.7318 nats/char
+2026-09-20 20:04:45 | TRAIN  | [==========..............]  44.7% | 134000/300000 | elapsed 59m 06s | ETA 1h 13m 13s | loss=1.7265 nats/char
+2026-09-20 20:05:11 | VALID  | loss=1.791495 nats/char | best=1.790166 at update 120000
+2026-09-20 20:05:37 | TRAIN  | [==========..............]  45.3% | 136000/300000 | elapsed 59m 58s | ETA 1h 12m 19s | loss=1.7167 nats/char
+2026-09-20 20:06:29 | TRAIN  | [===========.............]  46.0% | 138000/300000 | elapsed 1h 00m 50s | ETA 1h 11m 25s | loss=1.7093 nats/char
+2026-09-20 20:07:20 | TRAIN  | [===========.............]  46.7% | 140000/300000 | elapsed 1h 01m 41s | ETA 1h 10m 30s | loss=1.7285 nats/char
+2026-09-20 20:07:20 | VALID  | loss=1.801649 nats/char | best=1.790166 at update 120000
+2026-09-20 20:08:13 | TRAIN  | [===========.............]  47.3% | 142000/300000 | elapsed 1h 02m 34s | ETA 1h 09m 37s | loss=1.7096 nats/char
+2026-09-20 20:09:07 | TRAIN  | [===========.............]  48.0% | 144000/300000 | elapsed 1h 03m 28s | ETA 1h 08m 45s | loss=1.7163 nats/char
+2026-09-20 20:09:34 | SAVE   | best validation model at update 145000 | 1.781454 nats/char
+2026-09-20 20:09:34 | VALID  | loss=1.781454 nats/char | best=1.781454 at update 145000
+2026-09-20 20:10:00 | TRAIN  | [===========.............]  48.7% | 146000/300000 | elapsed 1h 04m 21s | ETA 1h 07m 53s | loss=1.7175 nats/char
+2026-09-20 20:10:51 | TRAIN  | [===========.............]  49.3% | 148000/300000 | elapsed 1h 05m 12s | ETA 1h 06m 58s | loss=1.7116 nats/char
+2026-09-20 20:11:42 | TRAIN  | [============............]  50.0% | 150000/300000 | elapsed 1h 06m 03s | ETA 1h 06m 03s | loss=1.7116 nats/char
+2026-09-20 20:11:42 | VALID  | loss=1.796357 nats/char | best=1.781454 at update 145000
+2026-09-20 20:12:35 | TRAIN  | [============............]  50.7% | 152000/300000 | elapsed 1h 06m 57s | ETA 1h 05m 11s | loss=1.6867 nats/char
+2026-09-20 20:13:26 | TRAIN  | [============............]  51.3% | 154000/300000 | elapsed 1h 07m 48s | ETA 1h 04m 16s | loss=1.7167 nats/char
+2026-09-20 20:13:52 | VALID  | loss=1.793288 nats/char | best=1.781454 at update 145000
+2026-09-20 20:14:19 | TRAIN  | [============............]  52.0% | 156000/300000 | elapsed 1h 08m 40s | ETA 1h 03m 23s | loss=1.7157 nats/char
+2026-09-20 20:15:10 | TRAIN  | [============............]  52.7% | 158000/300000 | elapsed 1h 09m 31s | ETA 1h 02m 29s | loss=1.6862 nats/char
+2026-09-20 20:16:02 | TRAIN  | [============............]  53.3% | 160000/300000 | elapsed 1h 10m 23s | ETA 1h 01m 35s | loss=1.7172 nats/char
+2026-09-20 20:16:03 | SAVE   | best validation model at update 160000 | 1.777929 nats/char
+2026-09-20 20:16:03 | VALID  | loss=1.777929 nats/char | best=1.777929 at update 160000
+2026-09-20 20:16:57 | TRAIN  | [============............]  54.0% | 162000/300000 | elapsed 1h 11m 18s | ETA 1h 00m 44s | loss=1.7216 nats/char
+2026-09-20 20:17:48 | TRAIN  | [=============...........]  54.7% | 164000/300000 | elapsed 1h 12m 09s | ETA 59m 50s | loss=1.6930 nats/char
+2026-09-20 20:18:14 | VALID  | loss=1.779851 nats/char | best=1.777929 at update 160000
+2026-09-20 20:18:40 | TRAIN  | [=============...........]  55.3% | 166000/300000 | elapsed 1h 13m 01s | ETA 58m 57s | loss=1.6931 nats/char
+2026-09-20 20:19:32 | TRAIN  | [=============...........]  56.0% | 168000/300000 | elapsed 1h 13m 53s | ETA 58m 03s | loss=1.7059 nats/char
+2026-09-20 20:20:24 | TRAIN  | [=============...........]  56.7% | 170000/300000 | elapsed 1h 14m 45s | ETA 57m 10s | loss=1.6955 nats/char
+2026-09-20 20:20:25 | SAVE   | best validation model at update 170000 | 1.773485 nats/char
+2026-09-20 20:20:25 | VALID  | loss=1.773485 nats/char | best=1.773485 at update 170000
+2026-09-20 20:21:18 | TRAIN  | [=============...........]  57.3% | 172000/300000 | elapsed 1h 15m 39s | ETA 56m 18s | loss=1.7163 nats/char
+2026-09-20 20:22:10 | TRAIN  | [=============...........]  58.0% | 174000/300000 | elapsed 1h 16m 31s | ETA 55m 25s | loss=1.6991 nats/char
+2026-09-20 20:22:37 | SAVE   | best validation model at update 175000 | 1.769437 nats/char
+2026-09-20 20:22:37 | VALID  | loss=1.769437 nats/char | best=1.769437 at update 175000
+2026-09-20 20:23:04 | TRAIN  | [==============..........]  58.7% | 176000/300000 | elapsed 1h 17m 26s | ETA 54m 33s | loss=1.6874 nats/char
+2026-09-20 20:23:56 | TRAIN  | [==============..........]  59.3% | 178000/300000 | elapsed 1h 18m 18s | ETA 53m 40s | loss=1.6868 nats/char
+2026-09-20 20:24:48 | TRAIN  | [==============..........]  60.0% | 180000/300000 | elapsed 1h 19m 09s | ETA 52m 46s | loss=1.7002 nats/char
+2026-09-20 20:24:48 | VALID  | loss=1.786299 nats/char | best=1.769437 at update 175000
+2026-09-20 20:25:43 | TRAIN  | [==============..........]  60.7% | 182000/300000 | elapsed 1h 20m 04s | ETA 51m 55s | loss=1.7123 nats/char
+2026-09-20 20:26:35 | TRAIN  | [==============..........]  61.3% | 184000/300000 | elapsed 1h 20m 56s | ETA 51m 01s | loss=1.6855 nats/char
+2026-09-20 20:27:05 | VALID  | loss=1.770357 nats/char | best=1.769437 at update 175000
+2026-09-20 20:27:34 | TRAIN  | [==============..........]  62.0% | 186000/300000 | elapsed 1h 21m 55s | ETA 50m 12s | loss=1.6914 nats/char
+2026-09-20 20:28:28 | TRAIN  | [===============.........]  62.7% | 188000/300000 | elapsed 1h 22m 49s | ETA 49m 20s | loss=1.7059 nats/char
+2026-09-20 20:29:22 | TRAIN  | [===============.........]  63.3% | 190000/300000 | elapsed 1h 23m 43s | ETA 48m 28s | loss=1.6945 nats/char
+2026-09-20 20:29:22 | VALID  | loss=1.787719 nats/char | best=1.769437 at update 175000
+2026-09-20 20:30:23 | TRAIN  | [===============.........]  64.0% | 192000/300000 | elapsed 1h 24m 45s | ETA 47m 40s | loss=1.7048 nats/char
+2026-09-20 20:31:18 | TRAIN  | [===============.........]  64.7% | 194000/300000 | elapsed 1h 25m 39s | ETA 46m 48s | loss=1.6725 nats/char
+2026-09-20 20:31:48 | SAVE   | best validation model at update 195000 | 1.759929 nats/char
+2026-09-20 20:31:48 | VALID  | loss=1.759929 nats/char | best=1.759929 at update 195000
+2026-09-20 20:32:18 | TRAIN  | [===============.........]  65.3% | 196000/300000 | elapsed 1h 26m 39s | ETA 45m 59s | loss=1.6950 nats/char
+2026-09-20 20:33:13 | TRAIN  | [===============.........]  66.0% | 198000/300000 | elapsed 1h 27m 34s | ETA 45m 07s | loss=1.7006 nats/char
+2026-09-20 20:34:09 | TRAIN  | [================........]  66.7% | 200000/300000 | elapsed 1h 28m 30s | ETA 44m 15s | loss=1.6980 nats/char
+2026-09-20 20:34:09 | VALID  | loss=1.770503 nats/char | best=1.759929 at update 195000
+2026-09-20 20:35:08 | TRAIN  | [================........]  67.3% | 202000/300000 | elapsed 1h 29m 29s | ETA 43m 25s | loss=1.6863 nats/char
+2026-09-20 20:36:02 | TRAIN  | [================........]  68.0% | 204000/300000 | elapsed 1h 30m 23s | ETA 42m 32s | loss=1.7067 nats/char
+2026-09-20 20:36:29 | VALID  | loss=1.773776 nats/char | best=1.759929 at update 195000
+2026-09-20 20:36:58 | TRAIN  | [================........]  68.7% | 206000/300000 | elapsed 1h 31m 19s | ETA 41m 40s | loss=1.6917 nats/char
+2026-09-20 20:37:51 | TRAIN  | [================........]  69.3% | 208000/300000 | elapsed 1h 32m 12s | ETA 40m 47s | loss=1.6886 nats/char
+2026-09-20 20:38:45 | TRAIN  | [================........]  70.0% | 210000/300000 | elapsed 1h 33m 07s | ETA 39m 54s | loss=1.6850 nats/char
+2026-09-20 20:38:46 | VALID  | loss=1.767316 nats/char | best=1.759929 at update 195000
+2026-09-20 20:39:43 | TRAIN  | [================........]  70.7% | 212000/300000 | elapsed 1h 34m 04s | ETA 39m 03s | loss=1.7189 nats/char
+2026-09-20 20:40:37 | TRAIN  | [=================.......]  71.3% | 214000/300000 | elapsed 1h 34m 58s | ETA 38m 10s | loss=1.6913 nats/char
+2026-09-20 20:41:03 | VALID  | loss=1.773303 nats/char | best=1.759929 at update 195000
+2026-09-20 20:41:31 | TRAIN  | [=================.......]  72.0% | 216000/300000 | elapsed 1h 35m 52s | ETA 37m 17s | loss=1.6976 nats/char
+2026-09-20 20:42:25 | TRAIN  | [=================.......]  72.7% | 218000/300000 | elapsed 1h 36m 47s | ETA 36m 24s | loss=1.6795 nats/char
+2026-09-20 20:43:23 | TRAIN  | [=================.......]  73.3% | 220000/300000 | elapsed 1h 37m 44s | ETA 35m 32s | loss=1.6859 nats/char
+2026-09-20 20:43:23 | VALID  | loss=1.766133 nats/char | best=1.759929 at update 195000
+2026-09-20 20:44:18 | TRAIN  | [=================.......]  74.0% | 222000/300000 | elapsed 1h 38m 39s | ETA 34m 40s | loss=1.6904 nats/char
+2026-09-20 20:45:12 | TRAIN  | [=================.......]  74.7% | 224000/300000 | elapsed 1h 39m 33s | ETA 33m 47s | loss=1.6950 nats/char
+2026-09-20 20:45:39 | VALID  | loss=1.772111 nats/char | best=1.759929 at update 195000
+2026-09-20 20:46:07 | TRAIN  | [==================......]  75.3% | 226000/300000 | elapsed 1h 40m 28s | ETA 32m 54s | loss=1.6944 nats/char
+2026-09-20 20:47:02 | TRAIN  | [==================......]  76.0% | 228000/300000 | elapsed 1h 41m 23s | ETA 32m 01s | loss=1.7208 nats/char
+2026-09-20 20:47:57 | TRAIN  | [==================......]  76.7% | 230000/300000 | elapsed 1h 42m 18s | ETA 31m 08s | loss=1.6947 nats/char
+2026-09-20 20:47:57 | VALID  | loss=1.764767 nats/char | best=1.759929 at update 195000
+2026-09-20 20:48:54 | TRAIN  | [==================......]  77.3% | 232000/300000 | elapsed 1h 43m 16s | ETA 30m 16s | loss=1.7110 nats/char
+2026-09-20 20:49:49 | TRAIN  | [==================......]  78.0% | 234000/300000 | elapsed 1h 44m 10s | ETA 29m 23s | loss=1.7042 nats/char
+2026-09-20 20:50:16 | VALID  | loss=1.765838 nats/char | best=1.759929 at update 195000
+2026-09-20 20:50:47 | TRAIN  | [==================......]  78.7% | 236000/300000 | elapsed 1h 45m 08s | ETA 28m 31s | loss=1.6720 nats/char
+2026-09-20 20:51:39 | TRAIN  | [===================.....]  79.3% | 238000/300000 | elapsed 1h 46m 00s | ETA 27m 37s | loss=1.6686 nats/char
+2026-09-20 20:52:32 | TRAIN  | [===================.....]  80.0% | 240000/300000 | elapsed 1h 46m 54s | ETA 26m 43s | loss=1.6731 nats/char
+2026-09-20 20:52:33 | VALID  | loss=1.769630 nats/char | best=1.759929 at update 195000
+2026-09-20 20:53:30 | TRAIN  | [===================.....]  80.7% | 242000/300000 | elapsed 1h 47m 51s | ETA 25m 51s | loss=1.6861 nats/char
+2026-09-20 20:54:23 | TRAIN  | [===================.....]  81.3% | 244000/300000 | elapsed 1h 48m 44s | ETA 24m 57s | loss=1.6930 nats/char
+2026-09-20 20:54:51 | SAVE   | best validation model at update 245000 | 1.756930 nats/char
+2026-09-20 20:54:51 | VALID  | loss=1.756930 nats/char | best=1.756930 at update 245000
+2026-09-20 20:55:19 | TRAIN  | [===================.....]  82.0% | 246000/300000 | elapsed 1h 49m 40s | ETA 24m 04s | loss=1.6813 nats/char
+2026-09-20 20:56:12 | TRAIN  | [===================.....]  82.7% | 248000/300000 | elapsed 1h 50m 33s | ETA 23m 11s | loss=1.6745 nats/char
+2026-09-20 20:57:05 | TRAIN  | [====================....]  83.3% | 250000/300000 | elapsed 1h 51m 26s | ETA 22m 17s | loss=1.6766 nats/char
+2026-09-20 20:57:05 | VALID  | loss=1.778512 nats/char | best=1.756930 at update 245000
+2026-09-20 20:58:03 | TRAIN  | [====================....]  84.0% | 252000/300000 | elapsed 1h 52m 24s | ETA 21m 25s | loss=1.6860 nats/char
+2026-09-20 20:58:58 | TRAIN  | [====================....]  84.7% | 254000/300000 | elapsed 1h 53m 19s | ETA 20m 31s | loss=1.6882 nats/char
+2026-09-20 20:59:24 | VALID  | loss=1.764911 nats/char | best=1.756930 at update 245000
+2026-09-20 20:59:54 | TRAIN  | [====================....]  85.3% | 256000/300000 | elapsed 1h 54m 15s | ETA 19m 38s | loss=1.6866 nats/char
+2026-09-20 21:00:53 | TRAIN  | [====================....]  86.0% | 258000/300000 | elapsed 1h 55m 14s | ETA 18m 45s | loss=1.6734 nats/char
+2026-09-20 21:01:55 | TRAIN  | [====================....]  86.7% | 260000/300000 | elapsed 1h 56m 16s | ETA 17m 53s | loss=1.6675 nats/char
+2026-09-20 21:01:55 | VALID  | loss=1.767450 nats/char | best=1.756930 at update 245000
+2026-09-20 21:02:50 | TRAIN  | [====================....]  87.3% | 262000/300000 | elapsed 1h 57m 11s | ETA 17m 00s | loss=1.6883 nats/char
+2026-09-20 21:03:43 | TRAIN  | [=====================...]  88.0% | 264000/300000 | elapsed 1h 58m 04s | ETA 16m 06s | loss=1.6820 nats/char
+2026-09-20 21:04:10 | VALID  | loss=1.764173 nats/char | best=1.756930 at update 245000
+2026-09-20 21:04:39 | TRAIN  | [=====================...]  88.7% | 266000/300000 | elapsed 1h 59m 00s | ETA 15m 13s | loss=1.6899 nats/char
+2026-09-20 21:05:35 | TRAIN  | [=====================...]  89.3% | 268000/300000 | elapsed 1h 59m 56s | ETA 14m 19s | loss=1.6897 nats/char
+2026-09-20 21:06:31 | TRAIN  | [=====================...]  90.0% | 270000/300000 | elapsed 2h 00m 52s | ETA 13m 26s | loss=1.6863 nats/char
+2026-09-20 21:06:31 | VALID  | loss=1.766110 nats/char | best=1.756930 at update 245000
+2026-09-20 21:07:28 | TRAIN  | [=====================...]  90.7% | 272000/300000 | elapsed 2h 01m 49s | ETA 12m 32s | loss=1.6925 nats/char
+2026-09-20 21:08:23 | TRAIN  | [=====================...]  91.3% | 274000/300000 | elapsed 2h 02m 45s | ETA 11m 39s | loss=1.6764 nats/char
+2026-09-20 21:08:52 | VALID  | loss=1.764303 nats/char | best=1.756930 at update 245000
+2026-09-20 21:09:23 | TRAIN  | [======================..]  92.0% | 276000/300000 | elapsed 2h 03m 44s | ETA 10m 46s | loss=1.6663 nats/char
+2026-09-20 21:10:17 | TRAIN  | [======================..]  92.7% | 278000/300000 | elapsed 2h 04m 38s | ETA 9m 52s | loss=1.7047 nats/char
+2026-09-20 21:11:16 | TRAIN  | [======================..]  93.3% | 280000/300000 | elapsed 2h 05m 37s | ETA 8m 58s | loss=1.6663 nats/char
+2026-09-20 21:11:16 | VALID  | loss=1.760170 nats/char | best=1.756930 at update 245000
+2026-09-20 21:12:15 | TRAIN  | [======================..]  94.0% | 282000/300000 | elapsed 2h 06m 36s | ETA 8m 05s | loss=1.6617 nats/char
+2026-09-20 21:13:09 | TRAIN  | [======================..]  94.7% | 284000/300000 | elapsed 2h 07m 31s | ETA 7m 11s | loss=1.6859 nats/char
+2026-09-20 21:13:41 | VALID  | loss=1.757966 nats/char | best=1.756930 at update 245000
+2026-09-20 21:14:12 | TRAIN  | [======================..]  95.3% | 286000/300000 | elapsed 2h 08m 33s | ETA 6m 18s | loss=1.6590 nats/char
+2026-09-20 21:15:07 | TRAIN  | [=======================.]  96.0% | 288000/300000 | elapsed 2h 09m 28s | ETA 5m 24s | loss=1.6966 nats/char
+2026-09-20 21:16:04 | TRAIN  | [=======================.]  96.7% | 290000/300000 | elapsed 2h 10m 25s | ETA 4m 30s | loss=1.6883 nats/char
+2026-09-20 21:16:04 | VALID  | loss=1.764207 nats/char | best=1.756930 at update 245000
+2026-09-20 21:17:04 | TRAIN  | [=======================.]  97.3% | 292000/300000 | elapsed 2h 11m 26s | ETA 3m 36s | loss=1.6823 nats/char
+2026-09-20 21:18:04 | TRAIN  | [=======================.]  98.0% | 294000/300000 | elapsed 2h 12m 25s | ETA 2m 42s | loss=1.6874 nats/char
+2026-09-20 21:18:32 | SAVE   | best validation model at update 295000 | 1.747230 nats/char
+2026-09-20 21:18:32 | VALID  | loss=1.747230 nats/char | best=1.747230 at update 295000
+2026-09-20 21:19:04 | TRAIN  | [=======================.]  98.7% | 296000/300000 | elapsed 2h 13m 25s | ETA 1m 48s | loss=1.6963 nats/char
+2026-09-20 21:20:00 | TRAIN  | [=======================.]  99.3% | 298000/300000 | elapsed 2h 14m 21s | ETA 54s | loss=1.6593 nats/char
+2026-09-20 21:20:57 | TRAIN  | [========================] 100.0% | 300000/300000 | elapsed 2h 15m 18s | ETA 0s | loss=1.6844 nats/char
+2026-09-20 21:20:57 | VALID  | loss=1.747402 nats/char | best=1.747230 at update 295000
+2026-09-20 21:21:00 | STAGE  | [4/5] Saving final state
+2026-09-20 21:21:01 | STAGE  | [5/5] Complete | updates=300000 | time=2h 15m 21s | best validation=1.747230
+2026-09-20 21:21:01 | FILES  | /Users/dylanlawless/so/src/min_char_transformer_r/output/20260920_190535_seed666 | metrics.csv | training.html | generation_comparison.txt | generation_comparison.rds | best_model.rds | latest_checkpoint.rds

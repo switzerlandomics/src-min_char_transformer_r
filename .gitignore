@@ -3,6 +3,7 @@
 !/data/input.txt
 /output/*
 !/output/.gitkeep
+!/output/20260920_190535_seed666/
 
 # R session and IDE artifacts
 .Rhistory
